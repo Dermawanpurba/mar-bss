@@ -592,94 +592,7 @@
             font-size: 0.875rem !important;
         }
 
-        /* =========================================================================
-           6. STYLING KANBAN WO & PAPAN CATUR
-           ========================================================================= */
-        .kanban-card {
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .kanban-card:hover {
-            transform: translateY(-2px);
-        }
-        body.theme-cerah #kanbanWoView .bg-slate-900,
-        body.theme-cerah #kanbanWoView .bg-slate-950,
-        body.theme-cerah #papan-catur-modal .bg-slate-900,
-        body.theme-cerah #papan-catur-modal .bg-slate-950 {
-            background-color: #ffffff !important;
-        }
-        body.theme-cerah #kanbanWoView .border-slate-800,
-        body.theme-cerah #kanbanWoView .border-slate-700,
-        body.theme-cerah #papan-catur-modal .border-slate-800,
-        body.theme-cerah #papan-catur-modal .border-slate-700 {
-            border-color: #e2e8f0 !important;
-        }
-        body.theme-cerah #kanban-open-list,
-        body.theme-cerah #kanban-closed-list {
-            background-color: #f8fafc !important;
-        }
-        body.theme-cerah .kanban-card {
-            background-color: #ffffff !important;
-            border-color: #e2e8f0 !important;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.06) !important;
-        }
-        body.theme-cerah .kanban-card:hover {
-            background-color: #f8fafc !important;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1) !important;
-        }
-        body.theme-cerah #kanbanWoView input,
-        body.theme-cerah #kanbanWoView select,
-        body.theme-cerah #papan-catur-modal input,
-        body.theme-cerah #papan-catur-modal textarea {
-            background-color: #ffffff !important;
-            border-color: #cbd5e1 !important;
-            color: #0f172a !important;
-        }
-        body.theme-cerah #papan-catur-summary-tbody tr:hover {
-            background-color: #f1f5f9 !important;
-        }
-        body.theme-cerah #papan-catur-summary-tbody td {
-            color: #0f172a !important;
-            font-weight: 600 !important;
-        }
-        body.theme-cerah #papan-catur-last-wo-container {
-            background-color: #ffffff !important;
-            color: #0284c7 !important;
-            border-color: #38bdf8 !important;
-        }
-        body.theme-cerah .papan-catur-rfu-cell {
-            background-color: #f0fdf4 !important;
-            color: #15803d !important;
-            font-weight: 700 !important;
-        }
-        body.theme-cerah .papan-catur-bd-cell {
-            background-color: #fef2f2 !important;
-            color: #b91c1c !important;
-            font-weight: 700 !important;
-        }
-        body.theme-cerah #btnHeaderKanban,
-        body.theme-cerah #tabMechanicKanban {
-            background-color: #e0e7ff !important;
-            color: #4338ca !important;
-            border-color: #c7d2fe !important;
-            font-weight: 700 !important;
-        }
-        body.theme-cerah #btnHeaderKanban:hover,
-        body.theme-cerah #tabMechanicKanban:hover {
-            background-color: #c7d2fe !important;
-            color: #3730a3 !important;
-        }
-        body.theme-cerah #btnMobileColOpen.active {
-            background-color: #fee2e2 !important;
-            color: #b91c1c !important;
-            border-color: #fca5a5 !important;
-            font-weight: 700 !important;
-        }
-        body.theme-cerah #btnMobileColClosed.active {
-            background-color: #dcfce7 !important;
-            color: #15803d !important;
-            border-color: #86efac !important;
-            font-weight: 700 !important;
-        }
+
 
         /* =========================================================================
            LIQUID NAVIGATION BAR (SMARTPHONE BOTTOM NAVIGATION)
@@ -899,12 +812,6 @@
 
             <!-- Right Controls: Status Cloud Sync & User Profile -->
             <div class="flex items-center space-x-1.5 sm:space-x-3 shrink-0">
-                <!-- Universal Kanban WO Navigation Button -->
-                <button onclick="navigateToPortal('kanban')" id="btnHeaderKanban" title="Buka Dashboard Kanban WO & Papan Catur" class="text-xs bg-indigo-600/25 hover:bg-indigo-600/40 text-indigo-200 border border-indigo-500/40 px-2.5 py-1.5 sm:px-3 rounded-xl flex items-center space-x-1.5 sm:space-x-2 transition cursor-pointer min-h-[36px] interactive-lift">
-                    <i class="fa-solid fa-chess-board text-indigo-400 text-xs sm:text-sm"></i>
-                    <span class="font-bold text-[11px] hidden sm:inline">Kanban WO</span>
-                </button>
-
                 <!-- Theme Switcher (Cerah 70% / Gelap) -->
                 <button onclick="toggleTheme()" id="btnThemeToggle" title="Ganti Tema (Cerah 70% / Gelap)" class="text-xs bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 px-2.5 py-1.5 sm:px-3 rounded-xl flex items-center space-x-1.5 sm:space-x-2 transition cursor-pointer min-h-[36px] interactive-lift">
                     <i id="themeIcon" class="fa-solid fa-sun text-amber-500 text-xs"></i>
@@ -1144,10 +1051,6 @@
                     <button id="tabMechanicAppraisal" onclick="switchMechanicTab('appraisal')" class="tab-btn px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-xl text-slate-300 hover:text-white transition flex items-center justify-center gap-1.5 min-h-[44px]">
                         <i class="fa-solid fa-award text-amber-400"></i>
                         <span>Penilaian Kinerja</span>
-                    </button>
-                    <button id="tabMechanicKanban" type="button" onclick="navigateToPortal('kanban')" class="tab-btn px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-xl text-indigo-300 bg-indigo-600/20 hover:bg-indigo-600/35 border border-indigo-500/40 transition flex items-center justify-center gap-1.5 min-h-[44px] cursor-pointer interactive-lift" title="Buka Dashboard Kanban WO &amp; Papan Catur">
-                        <i class="fa-solid fa-chess-board text-indigo-400"></i>
-                        <span>Kanban WO</span>
                     </button>
                 </div>
                 <div class="text-xs text-slate-400 bg-slate-900/90 px-3 py-2 rounded-xl border border-slate-800 flex items-center justify-center space-x-2">
@@ -1435,10 +1338,6 @@
                         <i class="fa-solid fa-users-gear"></i>
                         <span>Semua Laporan</span>
                     </button>
-                    <button type="button" onclick="navigateToPortal('kanban')" class="tab-btn px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-xl text-indigo-300 bg-indigo-600/20 hover:bg-indigo-600/35 border border-indigo-500/40 transition flex items-center justify-center gap-1.5 min-h-[44px] cursor-pointer interactive-lift" title="Buka Dashboard Kanban WO &amp; Papan Catur">
-                        <i class="fa-solid fa-chess-board text-indigo-400"></i>
-                        <span>Kanban WO</span>
-                    </button>
                 </div>
                 <!-- Filters & Sync -->
                 <div class="grid grid-cols-2 sm:flex items-center gap-2">
@@ -1668,10 +1567,6 @@
                 <button id="tabAdminEmployees" onclick="switchAdminTab('employees')" class="tab-btn px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-xl text-slate-300 hover:text-white transition flex items-center gap-1.5 min-h-[44px] cursor-pointer whitespace-nowrap">
                     <i class="fa-solid fa-users text-sky-400"></i>
                     <span>Kelola Karyawan</span>
-                </button>
-                <button onclick="navigateToPortal('kanban')" class="tab-btn px-4 py-2.5 text-xs sm:text-sm font-semibold rounded-xl text-indigo-300 bg-indigo-600/20 hover:bg-indigo-600/35 border border-indigo-500/40 transition flex items-center gap-1.5 min-h-[44px] cursor-pointer whitespace-nowrap interactive-lift" title="Buka Dashboard Kanban WO &amp; Papan Catur">
-                    <i class="fa-solid fa-chess-board text-indigo-400"></i>
-                    <span>Kanban WO</span>
                 </button>
                 <button onclick="openMasterCategoryModal()" class="cursor-pointer ml-auto px-3.5 py-2 text-xs font-semibold rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 border border-amber-500/30 transition flex items-center gap-1.5 min-h-[44px] whitespace-nowrap interactive-lift">
                     <i class="fa-solid fa-tags text-amber-400"></i>
@@ -1985,175 +1880,6 @@
         </div>
         <!-- END VIEW 3: adminView -->
 
-        <!-- ========================================================================= -->
-        <!-- VIEW 4: KANBAN WORK ORDER & PAPAN CATUR (HOURLY BREAKDOWN REPORT) -->
-        <!-- ========================================================================= -->
-        <div id="kanbanWoView" class="hidden space-y-4">
-            <!-- Top Return & Action Bar (Mobile-First / Smartphone Ergonomic) -->
-            <div class="bg-slate-900 border border-slate-800 p-3.5 sm:p-4 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-sm">
-                <!-- Left: Kembali ke Input Mekanik Button -->
-                <div class="flex items-center gap-3">
-                    <button type="button" onclick="returnToMechanicInput()"
-                        class="cursor-pointer w-full sm:w-auto px-5 py-2.5 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 font-black text-xs sm:text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2 min-h-[44px] interactive-lift">
-                        <i class="fa-solid fa-arrow-left text-sm"></i>
-                        <span>Kembali ke Input Mekanik</span>
-                    </button>
-                    <span class="text-xs text-slate-400 hidden md:inline-flex items-center gap-1.5">
-                        <i class="fa-solid fa-chess-board text-indigo-400"></i>
-                        <span>Dashboard Kanban WO &amp; Papan Catur</span>
-                    </span>
-                </div>
-
-                <div class="hidden sm:flex items-center gap-2 text-xs text-slate-400">
-                    <i class="fa-solid fa-circle-info text-amber-400"></i>
-                    <span>Klik tombol di atas untuk kembali mengisi form laporan MAR mekanik</span>
-                </div>
-            </div>
-
-            <!-- PAPAN CATUR / HOURLY BREAKDOWN REPORT BOARD -->
-            <div class="bg-slate-900 border border-slate-800 rounded-2xl shadow-sm overflow-hidden p-4 space-y-3">
-                <!-- Top Bar (Tanggal, Title, Legend) -->
-                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 pb-3 border-b border-slate-800">
-                    <div class="flex items-center gap-2 flex-wrap">
-                        <span class="bg-black text-white font-mono font-black text-[11px] px-2.5 py-1 rounded shadow-sm border border-slate-700">TGL</span>
-                        <span id="papan-catur-date" class="bg-emerald-950/80 text-emerald-300 border border-emerald-500/40 font-mono font-black text-xs px-3 py-1 rounded shadow-sm">17/9/2026</span>
-                        <span class="bg-amber-400 text-slate-950 font-black text-[11px] px-2.5 py-1 rounded shadow-sm uppercase tracking-wide">MODEL</span>
-                        <span class="bg-yellow-300 text-slate-950 font-black text-[11px] px-2.5 py-1 rounded shadow-sm uppercase tracking-wide">STATUS</span>
-                        <span class="text-xs font-black italic uppercase tracking-wider text-slate-200 bg-slate-800 border border-slate-700 px-3 py-1 rounded shadow-sm ml-1">
-                            HOURLY BREAKDOWN REPORT
-                        </span>
-                    </div>
-
-                    <!-- Legend Indikator -->
-                    <div class="flex items-center gap-3 bg-slate-950/60 border border-slate-800 px-3 py-1.5 rounded-xl text-xs font-bold shrink-0">
-                        <span class="flex items-center gap-1.5 text-emerald-400">
-                            <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block border border-emerald-400 shadow-sm"></span> Unit Ready (RFU)
-                        </span>
-                        <span class="flex items-center gap-1.5 text-rose-400">
-                            <span class="w-3 h-3 rounded-full bg-red-600 inline-block border border-red-500 shadow-sm animate-pulse"></span> Unit Breakdown (BD)
-                        </span>
-                    </div>
-                </div>
-
-                <!-- Main Layout: Left Summary Table (3 cols) + Right Grid Papan Catur (9 cols) -->
-                <div class="grid grid-cols-1 xl:grid-cols-12 gap-4 items-start">
-                    <!-- Left Summary Table -->
-                    <div class="xl:col-span-3 space-y-2.5">
-                        <div class="border border-slate-800 rounded-xl overflow-hidden shadow-sm bg-slate-950">
-                            <table class="w-full text-xs text-left border-collapse">
-                                <thead>
-                                    <tr class="bg-slate-950 text-white font-mono text-[11px] uppercase border-b border-slate-800">
-                                        <th class="p-2 border-r border-slate-800">Unit</th>
-                                        <th class="p-2 text-center text-emerald-400 border-r border-slate-800 w-14">RFU</th>
-                                        <th class="p-2 text-center text-rose-400 w-14">B/D</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="papan-catur-summary-tbody" class="divide-y divide-slate-800 font-mono text-[11px]">
-                                    <!-- Dynamic Summary Rows -->
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!-- LAST WO Selector / Indicator -->
-                        <div class="border border-sky-500/30 bg-sky-950/30 rounded-xl p-3 flex items-center justify-between gap-2 shadow-sm">
-                            <span class="text-[10px] font-black italic uppercase text-sky-400 tracking-wider">LAST WO</span>
-                            <div id="papan-catur-last-wo-container" class="font-mono text-xs font-black text-sky-300 bg-slate-900 border border-sky-500/40 px-3 py-1 rounded-lg shadow-sm">
-                                -
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Right Grid Papan Catur Board -->
-                    <div class="xl:col-span-9 space-y-2">
-                        <!-- Mobile Swipe Reminder -->
-                        <div class="xl:hidden text-[11px] text-amber-400/90 bg-amber-500/10 border border-amber-500/20 px-3 py-1.5 rounded-xl flex items-center gap-2 font-medium">
-                            <i class="fa-solid fa-arrows-left-right animate-pulse text-xs"></i>
-                            <span>Geser tabel ke kanan untuk melihat seluruh status armada</span>
-                        </div>
-                        <div class="border border-slate-800 rounded-xl overflow-x-auto shadow-sm bg-slate-950">
-                            <table class="w-full text-xs border-collapse min-w-[680px]">
-                                <tbody id="papan-catur-grid-tbody" class="divide-y divide-slate-800 font-mono">
-                                    <!-- Dynamic Model Rows (RFU row & BD row per Model) -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Kanban Filters -->
-            <div class="bg-slate-900 border border-slate-800 p-4 rounded-2xl flex flex-col md:flex-row md:items-center gap-3 shadow-sm">
-                <div class="flex-1 relative">
-                    <i class="fa-solid fa-search absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
-                    <input type="text" id="kanban-search" oninput="renderKanbanWo()"
-                        placeholder="Cari No. WO, Kode Unit, Problem..."
-                        class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-9 pr-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-indigo-500 min-h-[40px]">
-                </div>
-                <div class="w-full md:w-52">
-                    <input type="month" id="kanban-filter-month" onchange="renderKanbanWo()"
-                        class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-indigo-500 min-h-[40px]">
-                </div>
-            </div>
-
-            <!-- Mobile Column Switcher (Khusus Smartphone < 1024px) -->
-            <div class="lg:hidden flex items-center gap-1.5 bg-slate-900 p-1.5 rounded-2xl border border-slate-800 shadow-sm">
-                <button type="button" onclick="setKanbanMobileTab('all')" id="btnMobileColAll" class="flex-1 py-2.5 px-2 text-xs font-bold rounded-xl transition text-slate-200 bg-slate-800 border border-slate-700 flex items-center justify-center gap-1.5 min-h-[44px] cursor-pointer active" title="Tampilkan Semua Kolom">
-                    <i class="fa-solid fa-table-columns text-xs text-indigo-400"></i>
-                    <span>Semua (<span id="mobile-total-badge">0</span>)</span>
-                </button>
-                <button type="button" onclick="setKanbanMobileTab('open')" id="btnMobileColOpen" class="flex-1 py-2.5 px-2 text-xs font-bold rounded-xl transition text-slate-400 hover:text-red-300 border border-transparent flex items-center justify-center gap-1.5 min-h-[44px] cursor-pointer">
-                    <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
-                    <span>WO Open (<span id="mobile-open-badge">0</span>)</span>
-                </button>
-                <button type="button" onclick="setKanbanMobileTab('closed')" id="btnMobileColClosed" class="flex-1 py-2.5 px-2 text-xs font-bold rounded-xl transition text-slate-400 hover:text-emerald-300 border border-transparent flex items-center justify-center gap-1.5 min-h-[44px] cursor-pointer">
-                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                    <span>WO Closed (<span id="mobile-closed-badge">0</span>)</span>
-                </button>
-            </div>
-
-            <!-- Kanban Board Columns (Desktop Selalu Tampil Berdampingan) -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                <!-- Column 1: WO OPEN -->
-                <div id="kanban-col-open-container" class="bg-slate-900 border border-slate-800 rounded-2xl shadow-sm flex flex-col h-[520px] sm:h-[600px] lg:h-[650px] overflow-hidden">
-                    <div class="p-3 bg-red-950/40 border-b border-slate-800 flex justify-between items-center shrink-0">
-                        <div class="flex items-center space-x-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
-                            <h4 class="text-xs font-black uppercase text-red-400 tracking-wider">WO OPEN (BREAKDOWN)</h4>
-                        </div>
-                        <span id="kanban-open-count" class="px-2.5 py-0.5 text-[10px] bg-red-900/60 text-red-300 border border-red-700/50 font-bold rounded-full">0</span>
-                    </div>
-                    <div id="kanban-open-list" ondragover="allowDropWo(event)" ondrop="dropWo(event, 'OPEN')"
-                        class="flex-1 overflow-y-auto p-3 space-y-3 bg-slate-950/40">
-                        <!-- JS renders cards here -->
-                    </div>
-                </div>
-
-                <!-- Column 2: WO CLOSED (RIWAYAT PEKERJAAN SELESAI) -->
-                <div id="kanban-col-closed-container" class="bg-slate-900 border border-slate-800 rounded-2xl shadow-sm flex flex-col h-[520px] sm:h-[600px] lg:h-[650px] overflow-hidden">
-                    <div class="p-3 bg-emerald-950/40 border-b border-slate-800 flex justify-between items-center shrink-0">
-                        <div class="flex items-center space-x-2">
-                            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                            <h4 class="text-xs font-black uppercase text-emerald-400 tracking-wider">WO CLOSED (RIWAYAT SELESAI)</h4>
-                        </div>
-                        <span id="kanban-closed-count" class="px-2.5 py-0.5 text-[10px] bg-emerald-900/60 text-emerald-300 border border-emerald-700/50 font-bold rounded-full">0</span>
-                    </div>
-                    <div id="kanban-closed-list" ondragover="allowDropWo(event)" ondrop="dropWo(event, 'CLOSED')"
-                        class="flex-1 overflow-y-auto p-3 space-y-3 bg-slate-950/40">
-                        <!-- JS renders cards here -->
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Floating Back Button specifically for Mobile/Smartphone in Kanban View (Disesuaikan agar di atas Liquid Nav) -->
-        <div id="kanbanMobileStickyBack" class="md:hidden fixed bottom-24 left-4 right-4 z-40 pointer-events-auto transition-all hidden">
-            <button type="button" onclick="returnToMechanicInput()"
-                class="w-full py-3 px-5 bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-500 text-slate-950 font-black text-xs sm:text-sm rounded-2xl shadow-2xl flex items-center justify-center gap-2 border-2 border-white/20 active:scale-95 transition cursor-pointer min-h-[44px]">
-                <i class="fa-solid fa-arrow-left text-sm"></i>
-                <span>Kembali ke Input Mekanik</span>
-            </button>
-        </div>
-
     </main>
 
     <!-- ========================================================================= -->
@@ -2175,9 +1901,9 @@
                     </a>
                 </li>
                 <li id="liquidNavItem-2" onclick="handleLiquidNavClick(2)">
-                    <a href="javascript:void(0)" aria-label="Kanban WO">
-                        <span class="icon"><i class="fa-solid fa-chess-board"></i></span>
-                        <span class="text">Kanban</span>
+                    <a href="javascript:void(0)" aria-label="Penilaian Kinerja Mekanik">
+                        <span class="icon"><i class="fa-solid fa-award"></i></span>
+                        <span class="text">Kinerja</span>
                     </a>
                 </li>
                 <li id="liquidNavItem-3" onclick="handleLiquidNavClick(3)">
@@ -2385,61 +2111,7 @@
         </div>
     </div>
 
-    <!-- ========================================================================= -->
-    <!-- MODAL: PENGATURAN UNIT PAPAN CATUR (FLEET MODEL & UNITS CONFIG) -->
-    <!-- ========================================================================= -->
-    <div id="papan-catur-modal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4">
-        <div class="bg-slate-900 rounded-3xl shadow-2xl border border-slate-800 max-w-3xl w-full max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-150">
-            <!-- Modal Header -->
-            <div class="p-4 sm:p-5 bg-slate-950 border-b border-slate-800 text-white flex justify-between items-center shrink-0">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-2xl bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 flex items-center justify-center text-base shrink-0">
-                        <i class="fa-solid fa-sliders"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-sm sm:text-base font-black uppercase tracking-wider text-indigo-400">Pengaturan List Unit Papan Catur</h3>
-                        <p class="text-xs text-slate-400">Atur unit-unit yang masuk dalam pemantauan Papan Catur &amp; klasifikasi model.</p>
-                    </div>
-                </div>
-                <button type="button" onclick="closePapanCaturModal()" class="text-slate-400 hover:text-white p-1 transition cursor-pointer">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
 
-            <!-- Modal Body -->
-            <div class="p-4 sm:p-6 overflow-y-auto space-y-4 flex-1">
-                <div class="bg-amber-500/10 border border-amber-500/30 rounded-2xl p-3 sm:p-4 text-xs text-amber-300 leading-relaxed flex items-start gap-3 shadow-sm">
-                    <i class="fa-solid fa-circle-info text-amber-400 text-sm shrink-0 mt-0.5"></i>
-                    <div>
-                        <b>Petunjuk:</b> Masukkan kode unit armada yang dipisahkan dengan koma (contoh: <code>BSS 108, BSS 112, BSS 115</code>). Unit yang terdaftar di sini otomatis tersinkron dengan status Work Order <b>OPEN</b> (masuk baris Breakdown merah) atau <b>CLOSED</b> (masuk baris Ready For Use hijau).
-                    </div>
-                </div>
-
-                <div id="papan-catur-config-container" class="space-y-3">
-                    <!-- Dynamic Model Config Cards -->
-                </div>
-
-                <button type="button" onclick="addNewPapanCaturModelRow()" class="w-full py-3 bg-slate-800 hover:bg-slate-750 text-slate-200 border border-dashed border-slate-700 rounded-2xl text-xs font-bold flex items-center justify-center gap-2 transition cursor-pointer interactive-lift min-h-[44px]">
-                    <i class="fa-solid fa-circle-plus text-indigo-400"></i> Tambah Kategori / Model Baru
-                </button>
-            </div>
-
-            <!-- Modal Footer -->
-            <div class="p-4 bg-slate-950 border-t border-slate-800 flex flex-wrap justify-between items-center gap-2 shrink-0">
-                <button type="button" onclick="resetPapanCaturToDefault()" class="px-3.5 py-2 text-xs font-bold text-rose-400 hover:bg-rose-500/10 border border-rose-500/30 rounded-xl transition cursor-pointer">
-                    <i class="fa-solid fa-arrow-rotate-left mr-1"></i> Reset Default Standar
-                </button>
-                <div class="flex gap-2">
-                    <button type="button" onclick="closePapanCaturModal()" class="px-4 py-2 text-xs font-semibold text-slate-300 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl transition cursor-pointer">
-                        Batal
-                    </button>
-                    <button type="button" onclick="savePapanCaturModalConfig()" class="px-5 py-2 text-xs font-black uppercase tracking-wider text-white bg-indigo-600 hover:bg-indigo-500 rounded-xl shadow-md transition cursor-pointer interactive-lift">
-                        <i class="fa-solid fa-floppy-disk mr-1"></i> Simpan Perubahan
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 
 
 
@@ -2458,7 +2130,6 @@
             CATEGORIES: 'mar_categories_master_v2',
             THEME: 'mar_theme_preference_v2',
             WO_DB: 'WO_DB',
-            PAPAN_CATUR_CONFIG: 'PAPAN_CATUR_CONFIG',
             GAS_URL: 'APP_GAS_URL'
         };
 
@@ -2470,7 +2141,6 @@
         let currentRoleKey = null;
         let categoryChartInstance = null;
         let woStore = [];
-        let papanCaturConfig = null;
         let LIVE_GAS_URL = LOCKED_GAS_URL;
         try {
             const storedUrl = localStorage.getItem(STORAGE_KEYS.GAS_URL);
@@ -2758,73 +2428,18 @@
         woStore = storedWoData;
 
         // ============================================================
-        // DEFAULT PAPAN CATUR FLEET CONFIGURATION
+        // MASTER DAFTAR UNIT ARMADA PT BSS (UNTUK AUTOCOMPLETE FORM INPUT MAR)
         // ============================================================
-        const DEFAULT_PAPAN_CATUR_CONFIG = [
-            {
-                model: "EXC",
-                name: "Excavator",
-                badgeBg: "bg-red-600 text-white",
-                units: ["BSS 108", "BSS 112", "BSS 115", "BSS 116", "BSS 117", "BSS 118", "BSS 119"]
-            },
-            {
-                model: "MAN",
-                name: "MAN Dump Truck",
-                badgeBg: "bg-slate-900 text-white",
-                isHauler: true,
-                units: ["BSS 608", "BSS 609", "BSS 612", "BSS 613", "BSS 617"]
-            },
-            {
-                model: "HINO",
-                name: "Hino Dump Truck",
-                badgeBg: "bg-amber-400 text-slate-950",
-                isHauler: true,
-                units: ["BSS 908", "BSS 912", "BSS 913", "BSS 918", "BSS 920", "BSS 921", "BSS 922"]
-            },
-            {
-                model: "DF",
-                name: "Dongfeng Dump Truck",
-                badgeBg: "bg-emerald-600 text-white",
-                isHauler: true,
-                units: ["BSS 701", "BSS 703", "BSS 707", "BSS 708", "BSS 710"]
-            },
-            {
-                model: "SITRAK",
-                name: "Sitrak Dump Truck",
-                badgeBg: "bg-cyan-600 text-white",
-                isHauler: true,
-                units: ["BSS 801", "BSS 803", "BSS 805", "BSS 806", "BSS 808", "BSS 809", "BSS 810", "BSS 811", "BSS 812", "BSS 813", "BSS 815", "BSS 816", "BSS 817", "BSS 818", "BSS 819", "BSS 820", "BSS 821", "BSS 822", "BSS 823"]
-            },
-            {
-                model: "GDR",
-                name: "Motor Grader",
-                badgeBg: "bg-sky-500 text-white",
-                units: ["BSS 301", "BSS 305"]
-            },
-            {
-                model: "DZR",
-                name: "Dozer",
-                badgeBg: "bg-blue-700 text-white",
-                units: ["BSS 206", "BSS 207", "BSS 209", "BSS 210"]
-            },
-            {
-                model: "BOMAG",
-                name: "Compactor / Bomag",
-                badgeBg: "bg-purple-700 text-white",
-                units: ["BSS 302"]
-            },
-            {
-                model: "WL",
-                name: "Wheel Loader",
-                badgeBg: "bg-pink-600 text-white",
-                units: ["BSS 501"]
-            },
-            {
-                model: "WP",
-                name: "Water Pump",
-                badgeBg: "bg-slate-800 text-emerald-400",
-                units: ["EB 001", "EB 005", "EB 007", "EB 008"]
-            }
+        const MASTER_FLEET_UNITS = [
+            "BSS 108", "BSS 112", "BSS 115", "BSS 116", "BSS 117", "BSS 118", "BSS 119",
+            "BSS 206", "BSS 207", "BSS 209", "BSS 210",
+            "BSS 301", "BSS 302", "BSS 305",
+            "BSS 501",
+            "BSS 601", "BSS 602", "BSS 608", "BSS 609", "BSS 612", "BSS 613", "BSS 617",
+            "BSS 701", "BSS 703", "BSS 707", "BSS 708", "BSS 710",
+            "BSS 801", "BSS 803", "BSS 805", "BSS 806", "BSS 808", "BSS 809", "BSS 810", "BSS 811", "BSS 812", "BSS 813", "BSS 815", "BSS 816", "BSS 817", "BSS 818", "BSS 819", "BSS 820", "BSS 821", "BSS 822", "BSS 823",
+            "BSS 906", "BSS 908", "BSS 909", "BSS 911", "BSS 912", "BSS 913", "BSS 915", "BSS 918", "BSS 920", "BSS 921", "BSS 922",
+            "EB 001", "EB 005", "EB 007", "EB 008"
         ];
 
         /**
@@ -3181,10 +2796,6 @@
             document.getElementById('mechanicView').classList.add('hidden');
             document.getElementById('foremanView').classList.add('hidden');
             document.getElementById('adminView').classList.add('hidden');
-            const kanbanView = document.getElementById('kanbanWoView');
-            if (kanbanView) kanbanView.classList.add('hidden');
-            const kanbanMobileBack = document.getElementById('kanbanMobileStickyBack');
-            if (kanbanMobileBack) kanbanMobileBack.classList.add('hidden');
             document.getElementById('roleBanner').classList.add('hidden');
 
             // Sembunyikan Liquid Nav saat logout
@@ -3215,21 +2826,13 @@
             document.getElementById('mechanicView').classList.add('hidden');
             document.getElementById('foremanView').classList.add('hidden');
             document.getElementById('adminView').classList.add('hidden');
-            const kanbanView = document.getElementById('kanbanWoView');
-            if (kanbanView) kanbanView.classList.add('hidden');
-            const kanbanMobileBack = document.getElementById('kanbanMobileStickyBack');
-            if (kanbanMobileBack) kanbanMobileBack.classList.toggle('hidden', roleKey !== 'kanban_wo');
 
             // Tampilkan Liquid Nav pada smartphone saat user aktif
             const liquidNav = document.getElementById('liquidNavContainer');
             if (liquidNav) liquidNav.classList.remove('hidden');
 
-            // Sinkronisasi status tab Liquid Nav
-            if (roleKey === 'kanban_wo') {
-                setLiquidNavActive(2, false);
-            } else {
-                setLiquidNavActive(0, false);
-            }
+            // Set item default liquid nav
+            setLiquidNavActive(0, false);
 
             // Toggle Tombol Login & Logout di Topbar
             document.getElementById('btnLogin').classList.add('hidden');
@@ -3335,32 +2938,6 @@
                 setAdminDatePreset('all');
                 renderAdminViews();
 
-            // D. ROLE KANBAN WO & PAPAN CATUR
-            } else if (roleKey === 'kanban_wo') {
-                if (kanbanView) kanbanView.classList.remove('hidden');
-
-                roleBanner.className = "mb-6 p-4 rounded-2xl border border-indigo-500/30 bg-indigo-500/10 flex flex-wrap items-center justify-between gap-3 shadow-md";
-                roleBanner.innerHTML = `
-                    <div class="flex items-center space-x-3.5">
-                        <div class="w-10 h-10 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-lg shadow-md">
-                            <i class="fa-solid fa-chess-board"></i>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-indigo-400 text-sm sm:text-base">Dashboard Kanban WO &amp; Papan Catur (Fleet Availability)</h3>
-                            <p class="text-xs text-slate-300">Monitor ketersediaan armada tambang (RFU vs B/D) dan alur perbaikan Work Order secara realtime.</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <button type="button" onclick="returnToMechanicInput()" class="px-4 py-2 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-400 hover:to-yellow-500 text-slate-950 font-black text-xs rounded-xl shadow-md transition flex items-center gap-1.5 cursor-pointer min-h-[38px] interactive-lift">
-                            <i class="fa-solid fa-arrow-left"></i>
-                            <span>Kembali ke Input Mekanik</span>
-                        </button>
-                        <span class="text-xs px-3 py-1 bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 rounded-full font-bold uppercase tracking-wider hidden sm:inline-block"><i class="fa-solid fa-truck-monster mr-1"></i>FLEET CONTROL</span>
-                    </div>
-                `;
-
-                renderKanbanWo();
-                setKanbanMobileTab(kanbanMobileActiveTab);
             }
 
             // Portal Switcher Bar inside roleBanner
@@ -3368,10 +2945,7 @@
         }
 
         function navigateToPortal(portal) {
-            if (portal === 'kanban') {
-                switchRole('kanban_wo');
-                setLiquidNavActive(2, false);
-            } else if (portal === 'foreman') {
+            if (portal === 'foreman') {
                 if (currentUser && currentUser.roleKey && currentUser.roleKey.startsWith('foreman_')) {
                     switchRole(currentUser.roleKey);
                 } else {
@@ -3406,75 +2980,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        let kanbanMobileActiveTab = 'all';
-        function setKanbanMobileTab(tab) {
-            kanbanMobileActiveTab = tab;
-            const openCol = document.getElementById('kanban-col-open-container');
-            const closedCol = document.getElementById('kanban-col-closed-container');
-            const btnOpen = document.getElementById('btnMobileColOpen');
-            const btnClosed = document.getElementById('btnMobileColClosed');
-            const btnAll = document.getElementById('btnMobileColAll');
-
-            if (!openCol || !closedCol) return;
-
-            // Di layar desktop (>= 1024px), kedua kolom HARUS SELALU TAMPIL berdampingan agar history WO Closed bisa dicek
-            if (window.innerWidth >= 1024) {
-                openCol.classList.remove('hidden');
-                closedCol.classList.remove('hidden');
-                return;
-            }
-
-            // Di layar smartphone / tablet (< 1024px):
-            if (tab === 'open') {
-                openCol.classList.remove('hidden');
-                closedCol.classList.add('hidden');
-                if (btnOpen) {
-                    btnOpen.className = 'flex-1 py-2.5 px-2 text-xs font-bold rounded-xl transition text-red-300 bg-red-950/70 border border-red-800/70 flex items-center justify-center gap-1.5 min-h-[44px] cursor-pointer active';
-                }
-                if (btnClosed) {
-                    btnClosed.className = 'flex-1 py-2.5 px-2 text-xs font-bold rounded-xl transition text-slate-400 hover:text-emerald-300 border border-transparent flex items-center justify-center gap-1.5 min-h-[44px] cursor-pointer';
-                }
-                if (btnAll) {
-                    btnAll.className = 'flex-1 py-2.5 px-2 text-xs font-bold rounded-xl transition text-slate-400 hover:text-slate-200 border border-transparent flex items-center justify-center gap-1.5 min-h-[44px] cursor-pointer';
-                }
-            } else if (tab === 'closed') {
-                openCol.classList.add('hidden');
-                closedCol.classList.remove('hidden');
-                if (btnOpen) {
-                    btnOpen.className = 'flex-1 py-2.5 px-2 text-xs font-bold rounded-xl transition text-slate-400 hover:text-red-300 border border-transparent flex items-center justify-center gap-1.5 min-h-[44px] cursor-pointer';
-                }
-                if (btnClosed) {
-                    btnClosed.className = 'flex-1 py-2.5 px-2 text-xs font-bold rounded-xl transition text-emerald-300 bg-emerald-950/70 border border-emerald-800/70 flex items-center justify-center gap-1.5 min-h-[44px] cursor-pointer active';
-                }
-                if (btnAll) {
-                    btnAll.className = 'flex-1 py-2.5 px-2 text-xs font-bold rounded-xl transition text-slate-400 hover:text-slate-200 border border-transparent flex items-center justify-center gap-1.5 min-h-[44px] cursor-pointer';
-                }
-            } else {
-                openCol.classList.remove('hidden');
-                closedCol.classList.remove('hidden');
-                if (btnOpen) {
-                    btnOpen.className = 'flex-1 py-2.5 px-2 text-xs font-bold rounded-xl transition text-slate-400 hover:text-red-300 border border-transparent flex items-center justify-center gap-1.5 min-h-[44px] cursor-pointer';
-                }
-                if (btnClosed) {
-                    btnClosed.className = 'flex-1 py-2.5 px-2 text-xs font-bold rounded-xl transition text-slate-400 hover:text-emerald-300 border border-transparent flex items-center justify-center gap-1.5 min-h-[44px] cursor-pointer';
-                }
-                if (btnAll) {
-                    btnAll.className = 'flex-1 py-2.5 px-2 text-xs font-bold rounded-xl transition text-slate-200 bg-slate-800 border border-slate-700 flex items-center justify-center gap-1.5 min-h-[44px] cursor-pointer active';
-                }
-            }
-        }
-
-        window.addEventListener('resize', () => {
-            if (window.innerWidth >= 1024) {
-                const openCol = document.getElementById('kanban-col-open-container');
-                const closedCol = document.getElementById('kanban-col-closed-container');
-                if (openCol) openCol.classList.remove('hidden');
-                if (closedCol) closedCol.classList.remove('hidden');
-            } else {
-                setKanbanMobileTab(kanbanMobileActiveTab);
-            }
-        });
-
         // Tab Switching (Diperbarui dengan integrasi tab Appraisal, Employees, dan Rekap Revisi)
         function switchMechanicTab(tab) {
             const tabForm = document.getElementById('tabMechanicForm');
@@ -3499,6 +3004,7 @@
                 setLiquidNavActive(3, false);
                 renderMechanicTable();
             } else if (tab === 'appraisal') {
+                setLiquidNavActive(2, false);
                 calculateAppraisal();
             }
         }
@@ -4997,10 +4503,6 @@
                         woStore = res.data.wo;
                         safeSetStorage(STORAGE_KEYS.WO_DB, woStore);
                         populateWoDatalists();
-                        if (currentRoleKey === 'kanban_wo') {
-                            renderPapanCatur();
-                            renderKanbanWo();
-                        }
                     }
 
                     updateGasSyncIndicator(true);
@@ -5120,709 +4622,17 @@
 
         /**
          * =========================================================================
-         * 8. KANBAN WORK ORDER & PAPAN CATUR (HOURLY BREAKDOWN REPORT)
+         * 8. AUTOCOMPLETE LINKAGE DENGAN FORM MAR MEKANIK (LIGHTWEIGHT & FAST)
          * =========================================================================
          */
-
-        function getPapanCaturConfig() {
-            if (papanCaturConfig && Array.isArray(papanCaturConfig) && papanCaturConfig.length > 0) {
-                return papanCaturConfig;
-            }
-            const saved = localStorage.getItem(STORAGE_KEYS.PAPAN_CATUR_CONFIG);
-            if (saved) {
-                try {
-                    const parsed = JSON.parse(saved);
-                    if (Array.isArray(parsed) && parsed.length > 0) {
-                        papanCaturConfig = parsed;
-                        return papanCaturConfig;
-                    }
-                } catch (e) {
-                    console.warn("Gagal parse PAPAN_CATUR_CONFIG:", e);
-                }
-            }
-            papanCaturConfig = JSON.parse(JSON.stringify(DEFAULT_PAPAN_CATUR_CONFIG));
-            return papanCaturConfig;
-        }
-
-        function setPapanCaturConfig(newConfig) {
-            papanCaturConfig = newConfig;
-            safeSetStorage(STORAGE_KEYS.PAPAN_CATUR_CONFIG, newConfig);
-        }
-
-        function normalizeUnitCodeKey(str) {
-            return String(str || "").toUpperCase().replace(/[^A-Z0-9]/g, '');
-        }
-
-        function isWoClosed(item) {
-            if (!item) return false;
-            let st = String(item["STATUS WO"] || item["STATUS_WO"] || item["Status WO"] || item["STATUS"] || item["Status"] || "").toUpperCase().trim();
-            if (st === 'CLOSE' || st === 'CLOSED' || st === 'FINISH' || st === 'DONE') return true;
-            if (st === 'OPEN' || st === 'PENDING' || st === 'IN PROGRESS') return false;
-            const endDate = String(item["END DATE"] || item["END_DATE"] || item["TGL SELESAI"] || "").trim();
-            const action = String(item["ACTION"] || item["action"] || "").toLowerCase();
-            if ((endDate && endDate !== '-') || action.includes("selesai")) {
-                return true;
-            }
-            return false;
-        }
-
-        function getWoYearMonth(dateStr) {
-            if (!dateStr) return "";
-            const s = String(dateStr).trim();
-            const dmy = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
-            if (dmy) {
-                const year = dmy[3];
-                const month = String(dmy[2]).padStart(2, '0');
-                return `${year}-${month}`;
-            }
-            const ymd = s.match(/^(\d{4})[\/\-](\d{1,2})/);
-            if (ymd) {
-                const year = ymd[1];
-                const month = String(ymd[2]).padStart(2, '0');
-                return `${year}-${month}`;
-            }
-            return "";
-        }
-
-        function renderKanbanWo() {
-            const container = document.getElementById('kanbanWoView');
-            if (!container || container.classList.contains('hidden')) return;
-
-            const searchQuery = (document.getElementById('kanban-search')?.value || "").toLowerCase().trim();
-            const monthQuery = document.getElementById('kanban-filter-month')?.value || "";
-
-            let items = woStore.filter(item => {
-                if (!item) return false;
-                const noWo = String(item["NO WO"] || item["NO_WO"] || item["No WO"] || item["WO"] || "").trim();
-                const noId = String(item["NO ID"] || item["NO_ID"] || item["No ID"] || item["UNIT_CODE"] || item["UNIT"] || "").trim();
-                const problem = String(item["PROBLEM"] || item["problem"] || "").trim();
-                if (!noWo && !noId && !problem) return false;
-                if (noWo.startsWith("#ERROR") && !noId && !problem) return false;
-                return true;
-            });
-
-            if (searchQuery) {
-                items = items.filter(item => {
-                    const noWo = String(item["NO WO"] || item["NO_WO"] || item["WO"] || "").toLowerCase();
-                    const noId = String(item["NO ID"] || item["NO_ID"] || item["UNIT"] || "").toLowerCase();
-                    const problem = String(item["PROBLEM"] || item["problem"] || "").toLowerCase();
-                    const action = String(item["ACTION"] || item["action"] || "").toLowerCase();
-                    return noWo.includes(searchQuery) || noId.includes(searchQuery) || problem.includes(searchQuery) || action.includes(searchQuery);
-                });
-            }
-
-            if (monthQuery) {
-                items = items.filter(item => {
-                    const date = item["START DATE"] || item["START_DATE"] || item["TGL MULAI"] || "";
-                    const itemMonth = getWoYearMonth(date);
-                    return itemMonth === monthQuery;
-                });
-            }
-
-            const openList = items.filter(item => !isWoClosed(item));
-            const closedList = items.filter(item => isWoClosed(item));
-
-            // Urutkan closedList secara descending (WO yang baru selesai / no WO tertinggi di paling atas) agar mudah cek history
-            closedList.sort((a, b) => {
-                const noWoA = String(a["NO WO"] || a["NO_WO"] || a["WO"] || "");
-                const noWoB = String(b["NO WO"] || b["NO_WO"] || b["WO"] || "");
-                return noWoB.localeCompare(noWoA, undefined, { numeric: true, sensitivity: 'base' });
-            });
-
-            const renderCards = (list, targetCol) => {
-                if (list.length === 0) {
-                    return `<div class="text-center py-10 text-slate-400 text-xs italic bg-slate-900/30 border border-dashed border-slate-800 rounded-xl">Tidak ada Work Order pada kolom ini</div>`;
-                }
-                return list.map(item => {
-                    const noWo = item["NO WO"] || item["NO_WO"] || item["WO"] || "-";
-                    const noId = item["NO ID"] || item["NO_ID"] || item["UNIT"] || "-";
-                    const problem = item["PROBLEM"] || item["problem"] || "-";
-                    const action = item["ACTION"] || item["action"] || "";
-                    const startDate = item["START DATE"] || item["START_DATE"] || "-";
-                    const startTime = item["START TIME"] || item["START_TIME"] || "";
-                    const endDate = item["END DATE"] || item["END_DATE"] || item["TGL SELESAI"] || "";
-                    const endTime = item["END TIME"] || item["END_TIME"] || item["JAM SELESAI"] || "";
-                    const isClosed = targetCol === 'CLOSED';
-
-                    return `
-                    <div draggable="true" ondragstart="dragWo(event, '${noWo}')"
-                        class="kanban-card p-3.5 bg-slate-900 hover:bg-slate-850 border border-slate-800 rounded-xl shadow-md cursor-grab active:cursor-grabbing space-y-2.5 text-xs select-none">
-                        <div class="flex justify-between items-center gap-2">
-                            <span class="font-mono font-black text-slate-100 bg-slate-800/90 border border-slate-700 px-2.5 py-0.5 rounded-lg text-[11px] shadow-sm tracking-wide">${noWo}</span>
-                            <span class="font-mono font-black text-amber-400 bg-amber-500/10 border border-amber-500/30 px-2 py-0.5 rounded-lg text-[11px]">${noId}</span>
-                        </div>
-                        <div>
-                            <h5 class="font-bold text-[10px] text-slate-400 uppercase tracking-wider mb-0.5">Problem / Kerusakan:</h5>
-                            <p class="text-slate-200 font-medium text-xs leading-relaxed line-clamp-2" title="${problem}">${problem}</p>
-                        </div>
-                        ${action && action !== '-' ? `
-                        <div class="bg-slate-950/60 p-2 rounded-lg border border-slate-800/80">
-                            <h5 class="font-bold text-[9px] text-slate-400 uppercase tracking-wider mb-0.5">Tindakan / Action:</h5>
-                            <p class="text-slate-300 text-[11px] leading-relaxed line-clamp-2" title="${action}">${action}</p>
-                        </div>` : ''}
-                        <div class="flex flex-col gap-1 text-[10px] text-slate-400 font-mono border-t border-slate-800 pt-2">
-                            <div class="flex justify-between items-center">
-                                <span class="flex items-center gap-1">
-                                    <i class="fa-solid fa-play text-[9px] text-sky-400"></i> Mulai: ${startDate} ${startTime ? '• ' + startTime : ''}
-                                </span>
-                                <span class="px-2 py-0.5 rounded-full font-bold uppercase text-[9px] ${isClosed ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-red-500/20 text-red-300 border border-red-500/30'}">
-                                    ${isClosed ? '<i class="fa-solid fa-check-double mr-1 text-[8px]"></i>CLOSED' : '<i class="fa-solid fa-triangle-exclamation mr-1 text-[8px]"></i>OPEN'}
-                                </span>
-                            </div>
-                            ${isClosed ? `
-                            <div class="flex items-center gap-1 text-emerald-400 font-bold bg-emerald-500/10 px-2 py-0.5 rounded-md border border-emerald-500/20">
-                                <i class="fa-solid fa-circle-check text-[10px] text-emerald-400"></i> Selesai: ${endDate || startDate} ${endTime ? '• ' + endTime : ''}
-                            </div>` : ''}
-                        </div>
-                    </div>
-                    `;
-                }).join('');
-            };
-
-            const openCountEl = document.getElementById('kanban-open-count');
-            const openListEl = document.getElementById('kanban-open-list');
-            const closedCountEl = document.getElementById('kanban-closed-count');
-            const closedListEl = document.getElementById('kanban-closed-list');
-            const mobTotalBadge = document.getElementById('mobile-total-badge');
-            const mobOpenBadge = document.getElementById('mobile-open-badge');
-            const mobClosedBadge = document.getElementById('mobile-closed-badge');
-
-            if (openCountEl) openCountEl.innerText = openList.length;
-            if (openListEl) openListEl.innerHTML = renderCards(openList, 'OPEN');
-            if (closedCountEl) closedCountEl.innerText = closedList.length;
-            if (closedListEl) closedListEl.innerHTML = renderCards(closedList, 'CLOSED');
-            if (mobTotalBadge) mobTotalBadge.innerText = items.length;
-            if (mobOpenBadge) mobOpenBadge.innerText = openList.length;
-            if (mobClosedBadge) mobClosedBadge.innerText = closedList.length;
-
-            renderPapanCatur();
-        }
-
-        function renderPapanCatur() {
-            const summaryTbody = document.getElementById('papan-catur-summary-tbody');
-            const gridTbody = document.getElementById('papan-catur-grid-tbody');
-            const dateEl = document.getElementById('papan-catur-date');
-            const lastWoEl = document.getElementById('papan-catur-last-wo-container');
-
-            if (!summaryTbody || !gridTbody) return;
-
-            const today = new Date();
-            if (dateEl) {
-                dateEl.innerText = `${today.getDate()}/${today.getMonth() + 1}/${today.getFullYear()}`;
-            }
-
-            const config = getPapanCaturConfig();
-            const openWosByUnit = {};
-            let latestWoId = '-';
-
-            const validWos = woStore.filter(w => {
-                const noWo = String(w["NO WO"] || w["NO_WO"] || w["WO"] || "").trim();
-                const noId = String(w["NO ID"] || w["NO_ID"] || w["UNIT"] || "").trim();
-                return (noWo || noId) && !noWo.startsWith("#ERROR");
-            });
-
-            // Cari LAST WO: nomor WO OPEN terbaru
-            const openWoIds = validWos
-                .filter(w => !isWoClosed(w))
-                .map(w => String(w["NO WO"] || w["NO_WO"] || "").trim())
-                .filter(id => id && !id.startsWith('#'));
-
-            if (openWoIds.length > 0) {
-                openWoIds.sort((a, b) => b.localeCompare(a, undefined, { numeric: true, sensitivity: 'base' }));
-                latestWoId = openWoIds[0];
-            } else if (validWos.length > 0) {
-                latestWoId = String(validWos[validWos.length - 1]["NO WO"] || '-').trim();
-            }
-
-            validWos.forEach(w => {
-                const rawNoId = String(w["NO ID"] || w["NO_ID"] || w["UNIT"] || "").trim();
-                if (!rawNoId) return;
-
-                if (!isWoClosed(w)) {
-                    const cleanId = normalizeUnitCodeKey(rawNoId);
-                    if (!openWosByUnit[cleanId]) openWosByUnit[cleanId] = [];
-                    openWosByUnit[cleanId].push(w);
-                }
-            });
-
-            let summaryHtml = '';
-            let gridHtml = '';
-
-            let haulerRfu = 0;
-            let haulerBd = 0;
-            let totalRfu = 0;
-            let totalBd = 0;
-            let hasHauler = false;
-
-            config.forEach(cat => {
-                const modelName = cat.model;
-                const units = Array.isArray(cat.units) ? cat.units : [];
-                const badgeBg = cat.badgeBg || "bg-slate-800 text-white";
-
-                const rfuUnits = [];
-                const bdUnits = [];
-
-                units.forEach(u => {
-                    const cleanU = normalizeUnitCodeKey(u);
-                    if (!cleanU) return;
-                    if (openWosByUnit[cleanU] && openWosByUnit[cleanU].length > 0) {
-                        bdUnits.push({ unit: u, wos: openWosByUnit[cleanU] });
-                    } else {
-                        rfuUnits.push(u);
-                    }
-                });
-
-                const rfuCount = rfuUnits.length;
-                const bdCount = bdUnits.length;
-
-                totalRfu += rfuCount;
-                totalBd += bdCount;
-
-                if (cat.isHauler) {
-                    hasHauler = true;
-                    haulerRfu += rfuCount;
-                    haulerBd += bdCount;
-                }
-
-                summaryHtml += `
-                    <tr class="hover:bg-slate-900/60 transition border-b border-slate-800">
-                        <td class="p-2 font-bold text-slate-200 border-r border-slate-800">${modelName}</td>
-                        <td class="p-2 text-center font-bold text-emerald-400 bg-emerald-500/10 border-r border-slate-800">${rfuCount}</td>
-                        <td class="p-2 text-center font-bold ${bdCount > 0 ? 'text-rose-400 bg-rose-500/10 font-black' : 'text-slate-500'}">${bdCount}</td>
-                    </tr>
-                `;
-
-                const rfuChipsHtml = rfuUnits.length === 0 
-                    ? `<span class="text-[10px] text-slate-500 italic px-2 py-0.5">-</span>`
-                    : rfuUnits.map(u => `
-                        <span onclick="showPapanCaturUnitDetail('${u}', false)" 
-                            class="inline-flex items-center gap-1 bg-emerald-600 hover:bg-emerald-500 text-white px-2 py-0.5 rounded-lg text-[10px] font-black tracking-tight shadow-sm cursor-pointer transition transform hover:scale-105 select-none" title="Unit Ready (RFU) - Klik untuk info">
-                            ${u}
-                        </span>
-                    `).join('');
-
-                const bdChipsHtml = bdUnits.length === 0
-                    ? `<span class="text-[10px] text-slate-500 italic px-2 py-0.5">-</span>`
-                    : bdUnits.map(item => `
-                        <span onclick="showPapanCaturUnitDetail('${item.unit}', true)" 
-                            class="inline-flex items-center gap-1.5 bg-red-600 hover:bg-red-500 text-white px-2 py-0.5 rounded-lg text-[10px] font-black tracking-tight shadow-sm cursor-pointer transition transform hover:scale-105 select-none animate-pulse" title="Unit Breakdown (BD) - ${item.wos.length} Open WO! Klik untuk detail">
-                            <span>${item.unit}</span>
-                            <span class="bg-black/40 text-white text-[8px] px-1.5 py-0.5 rounded font-mono font-bold">${item.wos.length}</span>
-                        </span>
-                    `).join('');
-
-                gridHtml += `
-                    <tr class="border-b border-slate-800">
-                        <td rowspan="2" class="p-2.5 text-center border-r border-slate-800 font-black text-xs min-w-[76px] ${badgeBg}">
-                            <span>${modelName}</span>
-                        </td>
-                        <td class="p-1.5 text-center font-bold text-[10px] bg-emerald-950/80 text-emerald-300 border-r border-slate-800 w-14 select-none">
-                            RFU
-                        </td>
-                        <td class="p-2 bg-emerald-950/20 papan-catur-rfu-cell">
-                            <div class="flex flex-wrap items-center gap-1.5">
-                                ${rfuChipsHtml}
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="border-b-2 border-slate-800">
-                        <td class="p-1.5 text-center font-bold text-[10px] bg-red-950/80 text-red-300 border-r border-slate-800 w-14 select-none">
-                            BD
-                        </td>
-                        <td class="p-2 bg-red-950/20 papan-catur-bd-cell">
-                            <div class="flex flex-wrap items-center gap-1.5">
-                                ${bdChipsHtml}
-                            </div>
-                        </td>
-                    </tr>
-                `;
-
-                if (modelName === "SITRAK" && hasHauler) {
-                    summaryHtml += `
-                        <tr class="bg-amber-500/20 font-black border-b border-amber-500/40 text-amber-300">
-                            <td class="p-2 border-r border-amber-500/40 italic">HAULER</td>
-                            <td class="p-2 text-center text-amber-400 border-r border-amber-500/40">${haulerRfu}</td>
-                            <td class="p-2 text-center ${haulerBd > 0 ? 'text-red-400 font-black' : 'text-amber-400'}">${haulerBd}</td>
-                        </tr>
-                    `;
-                }
-            });
-
-            summaryHtml += `
-                <tr class="bg-slate-950 text-white font-black text-xs border-t-2 border-slate-800">
-                    <td class="p-2 border-r border-slate-800 italic">TOTAL</td>
-                    <td class="p-2 text-center text-emerald-400 border-r border-slate-800">${totalRfu}</td>
-                    <td class="p-2 text-center ${totalBd > 0 ? 'text-rose-400 font-black' : 'text-slate-400'}">${totalBd}</td>
-                </tr>
-            `;
-
-            summaryTbody.innerHTML = summaryHtml;
-            gridTbody.innerHTML = gridHtml;
-
-            if (lastWoEl) {
-                lastWoEl.innerText = latestWoId;
-            }
-        }
-
-        function showPapanCaturUnitDetail(unitCode, isBreakdown) {
-            const cleanU = normalizeUnitCodeKey(unitCode);
-            const openWos = woStore.filter(w => {
-                const rawNoId = normalizeUnitCodeKey(w["NO ID"] || w["NO_ID"] || w["UNIT"] || "");
-                if (rawNoId !== cleanU) return false;
-                return !isWoClosed(w);
-            });
-
-            if (isBreakdown && openWos.length > 0) {
-                let wosListHtml = openWos.map(w => `
-                    <div class="bg-red-500/10 border border-red-500/30 rounded-xl p-3 text-left space-y-1 text-xs">
-                        <div class="flex justify-between items-center">
-                            <span class="font-mono font-black text-white bg-slate-800 px-2 py-0.5 rounded border border-slate-700">${w["NO WO"] || '-'}</span>
-                            <span class="text-red-400 font-bold uppercase text-[10px] bg-red-500/20 px-2 py-0.5 rounded">STATUS OPEN</span>
-                        </div>
-                        <p class="text-slate-200 font-bold mt-1">Problem: <span class="font-normal text-slate-300">${w["PROBLEM"] || '-'}</span></p>
-                        ${w["ACTION"] ? `<p class="text-slate-400 text-[11px]">Action: <span class="text-slate-300">${w["ACTION"]}</span></p>` : ''}
-                        <div class="text-[10px] text-slate-500 font-mono mt-1 pt-1 border-t border-red-500/20 flex justify-between">
-                            <span>Tgl: ${w["START DATE"] || '-'}</span>
-                            <span>Jam: ${w["START TIME"] || '-'}</span>
-                        </div>
-                    </div>
-                `).join('');
-
-                if (typeof Swal !== 'undefined') {
-                    Swal.fire({
-                        title: `Unit Breakdown: ${unitCode}`,
-                        html: `
-                            <div class="space-y-2 mt-2 text-slate-300">
-                                <p class="text-xs">Armada ini memiliki <b>${openWos.length}</b> Work Order aktif berstatus OPEN:</p>
-                                <div class="max-h-64 overflow-y-auto space-y-2 pr-1">${wosListHtml}</div>
-                            </div>
-                        `,
-                        icon: 'warning',
-                        confirmButtonText: 'Filter di Kanban',
-                        showCancelButton: true,
-                        cancelButtonText: 'Tutup',
-                        confirmButtonColor: '#4f46e5',
-                        cancelButtonColor: '#64748b',
-                        background: document.body.classList.contains('theme-cerah') ? '#ffffff' : '#0f172a',
-                        color: document.body.classList.contains('theme-cerah') ? '#0f172a' : '#f8fafc'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            const searchInput = document.getElementById('kanban-search');
-                            if (searchInput) {
-                                searchInput.value = unitCode;
-                                renderKanbanWo();
-                                searchInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                            }
-                        }
-                    });
-                } else {
-                    alert(`Unit Breakdown ${unitCode}: ${openWos.length} Open WO`);
-                }
-            } else {
-                if (typeof Swal !== 'undefined') {
-                    Swal.fire({
-                        title: `Unit Ready (RFU): ${unitCode}`,
-                        html: `
-                            <div class="text-xs text-slate-300 text-center space-y-2">
-                                <div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center mx-auto text-xl font-bold">✓</div>
-                                <p class="font-bold text-slate-100 text-sm mt-2">Kondisi Siap Operasi (RFU)</p>
-                                <p class="text-slate-400">Tidak ada Work Order berstatus OPEN pada armada <b>${unitCode}</b>.</p>
-                            </div>
-                        `,
-                        icon: 'success',
-                        confirmButtonText: 'Tutup',
-                        confirmButtonColor: '#10b981',
-                        background: document.body.classList.contains('theme-cerah') ? '#ffffff' : '#0f172a',
-                        color: document.body.classList.contains('theme-cerah') ? '#0f172a' : '#f8fafc'
-                    });
-                } else {
-                    alert(`Unit ${unitCode} Siap Operasi (RFU).`);
-                }
-            }
-        }
-
-        // --- DRAG AND DROP KANBAN WO ---
-        function dragWo(ev, noWo) {
-            ev.dataTransfer.setData("text/plain", noWo);
-        }
-
-        function allowDropWo(ev) {
-            ev.preventDefault();
-        }
-
-        async function dropWo(ev, targetCol) {
-            ev.preventDefault();
-            const noWo = ev.dataTransfer.getData("text/plain");
-            if (!noWo) return;
-            await moveWo(noWo, targetCol);
-        }
-
-        async function moveWo(noWo, targetCol) {
-            const item = woStore.find(w => w["NO WO"] === noWo);
-            if (!item) return;
-
-            const isCurrentlyClosed = isWoClosed(item);
-            const wantClose = (targetCol === 'CLOSED');
-
-            if (isCurrentlyClosed === wantClose) return;
-
-            if (wantClose) {
-                item["STATUS WO"] = 'CLOSED';
-                if (!item["END DATE"]) item["END DATE"] = formatDateIndo ? new Date().toLocaleDateString('id-ID') : new Date().toISOString().split('T')[0];
-                if (!item["END TIME"]) item["END TIME"] = new Date().toTimeString().split(' ')[0].substring(0, 5);
-            } else {
-                item["STATUS WO"] = 'OPEN';
-                item["END DATE"] = '';
-                item["END TIME"] = '';
-            }
-
-            safeSetStorage(STORAGE_KEYS.WO_DB, woStore);
-            renderKanbanWo();
-            populateWoDatalists();
-
-            showToast(`Work Order ${noWo} dipindahkan ke ${targetCol}.`, 'info');
-
-            if (LIVE_GAS_URL) {
-                try {
-                    await fetchGAS('updateWoStatus', {
-                        noWo: noWo,
-                        status: wantClose ? 'CLOSED' : 'OPEN'
-                    });
-                } catch (e) {
-                    console.warn('Sync updateWoStatus ke GAS gagal, tersimpan lokal:', e);
-                }
-            }
-        }
-
-        // --- PENGATURAN MODAL PAPAN CATUR ---
-        function openPapanCaturModal() {
-            const container = document.getElementById('papan-catur-config-container');
-            if (!container) return;
-
-            const config = getPapanCaturConfig();
-            container.innerHTML = '';
-
-            config.forEach((cat, idx) => {
-                const unitsStr = (cat.units || []).join(', ');
-                const isHaulerChecked = cat.isHauler ? 'checked' : '';
-
-                const cardHtml = `
-                    <div class="p-3.5 bg-slate-950/70 border border-slate-800 rounded-2xl space-y-2.5 relative group" id="papan-model-row-${idx}">
-                        <div class="flex items-center justify-between gap-2">
-                            <div class="flex items-center gap-2 flex-1">
-                                <input type="text" value="${cat.model}" id="cfg-model-${idx}" placeholder="Model (Cth: EXC)" 
-                                    class="bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1 text-xs font-mono font-black uppercase text-amber-400 w-28 focus:outline-none focus:border-indigo-500">
-                                <input type="text" value="${cat.name || ''}" id="cfg-name-${idx}" placeholder="Nama Deskripsi (Cth: Excavator)" 
-                                    class="bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1 text-xs text-slate-200 flex-1 focus:outline-none focus:border-indigo-500">
-                            </div>
-                            <div class="flex items-center gap-3">
-                                <label class="flex items-center gap-1 text-[11px] font-bold text-slate-300 cursor-pointer">
-                                    <input type="checkbox" id="cfg-hauler-${idx}" ${isHaulerChecked} class="rounded text-indigo-600 focus:ring-0">
-                                    <span>Hauler</span>
-                                </label>
-                                <button type="button" onclick="deletePapanCaturModelRow(${idx})" class="text-rose-400 hover:text-rose-300 p-1.5 transition cursor-pointer" title="Hapus Kategori">
-                                    <i class="fa-solid fa-trash-can"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1">Daftar Kode Unit Armada (Pisahkan dengan koma):</label>
-                            <textarea id="cfg-units-${idx}" rows="2" placeholder="BSS 101, BSS 102, BSS 103..." 
-                                class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs font-mono text-slate-100 focus:outline-none focus:border-indigo-500">${unitsStr}</textarea>
-                        </div>
-                    </div>
-                `;
-                container.insertAdjacentHTML('beforeend', cardHtml);
-            });
-
-            document.getElementById('papan-catur-modal').classList.remove('hidden');
-        }
-
-        function closePapanCaturModal() {
-            const modal = document.getElementById('papan-catur-modal');
-            if (modal) modal.classList.add('hidden');
-        }
-
-        function addNewPapanCaturModelRow() {
-            const container = document.getElementById('papan-catur-config-container');
-            if (!container) return;
-
-            const idx = container.children.length;
-            const cardHtml = `
-                <div class="p-3.5 bg-slate-950/70 border border-slate-800 rounded-2xl space-y-2.5 relative" id="papan-model-row-${idx}">
-                    <div class="flex items-center justify-between gap-2">
-                        <div class="flex items-center gap-2 flex-1">
-                            <input type="text" value="" id="cfg-model-${idx}" placeholder="Model (Cth: ART)" 
-                                class="bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1 text-xs font-mono font-black uppercase text-amber-400 w-28 focus:outline-none focus:border-indigo-500">
-                            <input type="text" value="" id="cfg-name-${idx}" placeholder="Nama Deskripsi (Cth: Articulated Dump Truck)" 
-                                class="bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1 text-xs text-slate-200 flex-1 focus:outline-none focus:border-indigo-500">
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <label class="flex items-center gap-1 text-[11px] font-bold text-slate-300 cursor-pointer">
-                                <input type="checkbox" id="cfg-hauler-${idx}" class="rounded text-indigo-600 focus:ring-0">
-                                <span>Hauler</span>
-                            </label>
-                            <button type="button" onclick="deletePapanCaturModelRow(${idx})" class="text-rose-400 hover:text-rose-300 p-1.5 transition cursor-pointer" title="Hapus Kategori">
-                                <i class="fa-solid fa-trash-can"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-[10px] font-bold uppercase text-slate-400 mb-1">Daftar Kode Unit Armada (Pisahkan dengan koma):</label>
-                        <textarea id="cfg-units-${idx}" rows="2" placeholder="BSS 901, BSS 902..." 
-                            class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs font-mono text-slate-100 focus:outline-none focus:border-indigo-500"></textarea>
-                    </div>
-                </div>
-            `;
-            container.insertAdjacentHTML('beforeend', cardHtml);
-        }
-
-        function deletePapanCaturModelRow(idx) {
-            const row = document.getElementById(`papan-model-row-${idx}`);
-            if (row) row.remove();
-        }
-
-        function savePapanCaturModalConfig() {
-            const container = document.getElementById('papan-catur-config-container');
-            if (!container) return;
-
-            const newConfig = [];
-            const rows = container.querySelectorAll('[id^="papan-model-row-"]');
-
-            rows.forEach(row => {
-                const modelInput = row.querySelector('[id^="cfg-model-"]');
-                const nameInput = row.querySelector('[id^="cfg-name-"]');
-                const haulerInput = row.querySelector('[id^="cfg-hauler-"]');
-                const unitsInput = row.querySelector('[id^="cfg-units-"]');
-
-                const model = (modelInput?.value || '').trim().toUpperCase();
-                const name = (nameInput?.value || '').trim();
-                const isHauler = !!haulerInput?.checked;
-                const rawUnits = (unitsInput?.value || '').trim();
-
-                if (!model) return;
-
-                const unitsList = rawUnits
-                    .split(',')
-                    .map(u => u.trim())
-                    .filter(Boolean);
-
-                let badgeBg = "bg-slate-800 text-white";
-                if (model === "EXC") badgeBg = "bg-red-600 text-white";
-                else if (model === "MAN") badgeBg = "bg-slate-900 text-white";
-                else if (model === "HINO") badgeBg = "bg-amber-400 text-slate-950";
-                else if (model === "DF") badgeBg = "bg-emerald-600 text-white";
-                else if (model === "SITRAK") badgeBg = "bg-cyan-600 text-white";
-                else if (model === "GDR") badgeBg = "bg-sky-500 text-white";
-                else if (model === "DZR") badgeBg = "bg-blue-700 text-white";
-                else if (model === "BOMAG") badgeBg = "bg-purple-700 text-white";
-                else if (model === "WL") badgeBg = "bg-pink-600 text-white";
-                else if (model === "WP") badgeBg = "bg-slate-800 text-emerald-400";
-
-                newConfig.push({
-                    model,
-                    name,
-                    isHauler,
-                    badgeBg,
-                    units: unitsList
-                });
-            });
-
-            if (newConfig.length === 0) {
-                showToast('Minimal harus ada 1 model/kategori unit.', 'warning');
-                return;
-            }
-
-            setPapanCaturConfig(newConfig);
-            closePapanCaturModal();
-            renderPapanCatur();
-            populateWoDatalists();
-            showToast('Pengaturan armada Papan Catur berhasil diperbarui!', 'success');
-        }
-
-        function resetPapanCaturToDefault() {
-            if (!confirm('Kembalikan setting model dan list armada ke konfigurasi standar pabrik?')) return;
-            setPapanCaturConfig(JSON.parse(JSON.stringify(DEFAULT_PAPAN_CATUR_CONFIG)));
-            openPapanCaturModal();
-            renderPapanCatur();
-            populateWoDatalists();
-            showToast('Konfigurasi Papan Catur dikembalikan ke default.', 'info');
-        }
-
-        async function refreshWoDataLive() {
-            const icon = document.getElementById('woSyncIcon');
-            if (icon) icon.classList.add('fa-spin');
-            showToast('Menyinkronkan Work Order dari Google Sheets...', 'info');
-
-            try {
-                const res = await fetchGAS('getWoData');
-                let freshWo = null;
-                if (res && res.success && Array.isArray(res.data)) {
-                    freshWo = res.data;
-                } else if (Array.isArray(res)) {
-                    freshWo = res;
-                }
-
-                if (freshWo && freshWo.length > 0) {
-                    woStore = freshWo;
-                    safeSetStorage(STORAGE_KEYS.WO_DB, woStore);
-                    renderKanbanWo();
-                    populateWoDatalists();
-                    showToast(`Berhasil memuat ${woStore.length} data Work Order terbaru!`, 'success');
-                } else {
-                    showToast('Data WO berhasil diperiksa (tersinkronisasi).', 'info');
-                }
-            } catch (e) {
-                console.error("Gagal sinkron WO:", e);
-                showToast('Gagal sinkronisasi WO dari cloud.', 'error');
-            } finally {
-                if (icon) icon.classList.remove('fa-spin');
-            }
-        }
-
-        async function debugWoStore() {
-            const total = woStore.length;
-            const openItems = woStore.filter(w => !isWoClosed(w));
-            const hasBss301 = woStore.some(w => normalizeUnitCodeKey(w["NO ID"] || w["NO_ID"] || w["UNIT"] || "") === "BSS301");
-            const bss301Entries = woStore.filter(w => normalizeUnitCodeKey(w["NO ID"] || w["NO_ID"] || w["UNIT"] || "") === "BSS301");
-
-            let msg = `Total WO di memori: <b>${total}</b> baris<br>`;
-            msg += `WO Status OPEN: <b>${openItems.length}</b><br>`;
-            msg += `BSS 301 terdeteksi: <b>${hasBss301 ? 'YA (' + bss301Entries.length + ' WO)' : 'TIDAK'}</b><br><br>`;
-
-            if (typeof Swal !== 'undefined') {
-                const { isConfirmed } = await Swal.fire({
-                    title: 'Debug WO & Cache Memory',
-                    html: `<div class="text-xs text-left leading-relaxed text-slate-300 space-y-1">${msg}</div>`,
-                    icon: 'info',
-                    showCancelButton: true,
-                    confirmButtonText: 'Reset Cache ke Default Sheet',
-                    cancelButtonText: 'Tutup',
-                    confirmButtonColor: '#f59e0b',
-                    cancelButtonColor: '#64748b',
-                    background: document.body.classList.contains('theme-cerah') ? '#ffffff' : '#0f172a',
-                    color: document.body.classList.contains('theme-cerah') ? '#0f172a' : '#f8fafc'
-                });
-
-                if (isConfirmed) {
-                    woStore = [...DEFAULT_WO_DATA];
-                    safeSetStorage(STORAGE_KEYS.WO_DB, woStore);
-                    renderKanbanWo();
-                    populateWoDatalists();
-                    showToast('Cache WO direset ke data awal!', 'success');
-                }
-            } else {
-                alert(`Total WO: ${total}, Open: ${openItems.length}`);
-            }
-        }
-
-        // --- AUTOCOMPLETE LINKAGE DENGAN FORM MAR MEKANIK ---
         function populateWoDatalists() {
             const woDatalist = document.getElementById('woDatalist');
             const unitDatalist = document.getElementById('unitDatalist');
 
             if (woDatalist) {
-                const options = woStore.map(w => {
+                // Maksimal 50 WO terkini untuk menjaga kecepatan rendering di smartphone
+                const recentWos = Array.isArray(woStore) ? woStore.slice(-50) : [];
+                const options = recentWos.map(w => {
                     const noWo = w["NO WO"] || w["NO_WO"] || "";
                     const unit = w["NO ID"] || w["NO_ID"] || "";
                     const prob = w["PROBLEM"] || w["problem"] || "";
@@ -5833,13 +4643,13 @@
             }
 
             if (unitDatalist) {
-                const config = getPapanCaturConfig();
-                const allUnits = new Set();
-                config.forEach(c => (c.units || []).forEach(u => allUnits.add(u)));
-                woStore.forEach(w => {
-                    const u = w["NO ID"] || w["NO_ID"] || "";
-                    if (u) allUnits.add(u);
-                });
+                const allUnits = new Set(MASTER_FLEET_UNITS || []);
+                if (Array.isArray(woStore)) {
+                    woStore.forEach(w => {
+                        const u = w["NO ID"] || w["NO_ID"] || "";
+                        if (u) allUnits.add(u);
+                    });
+                }
                 unitDatalist.innerHTML = [...allUnits].sort().map(u => `<option value="${u}">`).join('');
             }
         }
@@ -6542,19 +5352,22 @@
                 syncFromGoogleSheets(true);
             }
 
-            // Pasang event listener auto-sync saat jendela browser kembali aktif (focus)
+            // Pasang event listener auto-sync saat jendela browser kembali aktif (focus) dengan jeda aman
+            let lastFocusSync = 0;
             window.addEventListener('focus', () => {
-                if (LIVE_GAS_URL) {
+                const now = Date.now();
+                if (LIVE_GAS_URL && (now - lastFocusSync > 60000)) { // minimal jeda 1 menit
+                    lastFocusSync = now;
                     syncFromGoogleSheets(true);
                 }
             });
 
-            // Auto-sync berkala tiap 30 detik untuk sinkronisasi antar laptop / multi-device
+            // Auto-sync berkala tiap 3 menit (180.000 ms) agar hemat kuota & baterai di smartphone
             setInterval(() => {
                 if (LIVE_GAS_URL && !document.hidden) {
                     syncFromGoogleSheets(true);
                 }
-            }, 30000);
+            }, 180000);
 
             // Cek apakah ada sesi login tersimpan di localStorage atau sessionStorage
             const savedSession = localStorage.getItem(STORAGE_KEYS.ACTIVE_USER) || sessionStorage.getItem(STORAGE_KEYS.ACTIVE_USER);
@@ -6630,43 +5443,44 @@
 
             switch(index) {
                 case 0: // Beranda
-                    if (currentRoleKey === 'kanban_wo') {
-                        if (currentUser && currentUser.roleKey) {
-                            switchRole(currentUser.roleKey);
-                        } else {
-                            switchRole('mechanic_saharudin');
-                        }
-                    } else {
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    if (currentRoleKey && currentRoleKey.startsWith('mechanic_')) {
+                        switchMechanicTab('form');
+                    } else if (currentRoleKey && currentRoleKey.startsWith('foreman_')) {
+                        switchForemanTab('validation');
+                    } else if (currentRoleKey && currentRoleKey.startsWith('admin_')) {
+                        switchAdminTab('overview');
                     }
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                     break;
 
                 case 1: // Input MAR
-                    if (currentRoleKey === 'kanban_wo') {
-                        returnToMechanicInput();
-                    } else if (currentRoleKey && currentRoleKey.startsWith('mechanic_')) {
+                    if (currentRoleKey && currentRoleKey.startsWith('mechanic_')) {
                         switchMechanicTab('form');
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
                     } else {
-                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        returnToMechanicInput();
                     }
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                     break;
 
-                case 2: // Kanban WO
-                    navigateToPortal('kanban');
+                case 2: // Kinerja Mekanik (Appraisal)
+                    if (currentRoleKey && currentRoleKey.startsWith('mechanic_')) {
+                        switchMechanicTab('appraisal');
+                    } else if (currentRoleKey && currentRoleKey.startsWith('admin_')) {
+                        switchAdminTab('appraisal');
+                    } else {
+                        returnToMechanicInput();
+                        switchMechanicTab('appraisal');
+                    }
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     break;
 
                 case 3: // Riwayat MAR
-                    if (currentRoleKey === 'kanban_wo') {
-                        if (currentUser && currentUser.roleKey) {
-                            switchRole(currentUser.roleKey);
-                        } else {
-                            switchRole('mechanic_saharudin');
-                        }
-                    }
                     if (currentRoleKey && currentRoleKey.startsWith('mechanic_')) {
                         switchMechanicTab('history');
+                    } else if (currentRoleKey && currentRoleKey.startsWith('foreman_')) {
+                        switchForemanTab('allRecap');
+                    } else if (currentRoleKey && currentRoleKey.startsWith('admin_')) {
+                        switchAdminTab('recap');
                     }
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     break;
