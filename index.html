@@ -1136,7 +1136,7 @@
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
                         <div>
                             <label class="block text-xs font-semibold text-slate-300 mb-1">No. WO <span class="text-rose-400">*</span></label>
-                            <input type="text" id="marWo" list="woDatalist" required placeholder="Contoh: 11-0928" oninput="handleWoInputChange()" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 text-slate-100 text-sm rounded-xl p-3 focus:ring-2 focus:ring-amber-500 uppercase placeholder-slate-600 min-h-[44px]">
+                            <input type="text" id="marWo" list="woDatalist" required placeholder="Masukkan No. WO..." oninput="handleWoInputChange()" autocomplete="off" class="w-full bg-slate-950 border border-slate-800 text-slate-100 text-sm rounded-xl p-3 focus:ring-2 focus:ring-amber-500 uppercase placeholder-slate-600 min-h-[44px]">
                             <datalist id="woDatalist"></datalist>
                         </div>
                         <div>
@@ -2184,6 +2184,11 @@
                         <i class="fa-solid fa-rotate"></i> Sync Semua ke Sheets
                     </button>
                 </div>
+                <div>
+                    <button type="button" onclick="cleanupAllSampleDataUI()" class="cursor-pointer w-full py-2.5 bg-rose-950/40 hover:bg-rose-900/50 text-rose-300 text-xs font-semibold rounded-xl border border-rose-800/60 transition flex items-center justify-center gap-1.5 min-h-[44px]" title="Bersihkan semua data sample/dummy (WO 11-09xx & MAR dummy)">
+                        <i class="fa-solid fa-trash-can text-rose-400"></i> Bersihkan Semua Data Sample (Lokal &amp; Cloud)
+                    </button>
+                </div>
                 <div class="grid grid-cols-2 gap-2">
                     <button onclick="closeGasSettingsModal()" class="cursor-pointer w-full py-2.5 bg-slate-800 text-slate-300 text-xs font-semibold rounded-xl min-h-[44px]">Batal</button>
                     <button onclick="saveGasSettings()" class="cursor-pointer w-full py-2.5 bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-bold rounded-xl shadow min-h-[44px]">Simpan URL</button>
@@ -2418,11 +2423,62 @@
         }
         let MECHANICS = (Array.isArray(storedMechs) && storedMechs.length > 0) ? storedMechs : DEFAULT_MECHANICS;
 
+        /**
+         * Helper format No. WO agar tidak memunculkan string mentah GMT/Tiongkok
+         */
+        function formatWoDisplay(val) {
+            if (!val) return '-';
+            let s = String(val).trim();
+            if (!s) return '-';
+            if (s.includes('GMT') || s.includes('00:00:00') || /^[A-Za-z]{3}\s+[A-Za-z]{3}\s+\d{1,2}\s+\d{4}/.test(s) || /^\d{4}-\d{2}-\d{2}T/.test(s)) {
+                try {
+                    const d = new Date(s);
+                    if (!isNaN(d.getTime())) {
+                        const day = String(d.getDate()).padStart(2, '0');
+                        const month = String(d.getMonth() + 1).padStart(2, '0');
+                        const year = d.getFullYear();
+                        return `${day}-${month}-${year}`;
+                    }
+                } catch (e) {}
+            }
+            return s;
+        }
+
+        /**
+         * Deduplikasi array MAR: Menyaring ID duplikat, prioritaskan status Approved/Rejected daripada Pending, dan sanitasi No. WO
+         */
+        function deduplicateMarArray(list) {
+            if (!Array.isArray(list)) return [];
+            const map = new Map();
+            list.forEach(item => {
+                if (!item || !item.id) return;
+                const id = String(item.id).trim();
+                if (!id) return;
+
+                if (item.woNumber) {
+                    item.woNumber = formatWoDisplay(item.woNumber);
+                }
+
+                if (!map.has(id)) {
+                    map.set(id, item);
+                } else {
+                    const existing = map.get(id);
+                    const statusPriority = { 'Approved': 3, 'Rejected': 2, 'Pending': 1 };
+                    const existingScore = statusPriority[existing.validationStatus] || 0;
+                    const newScore = statusPriority[item.validationStatus] || 0;
+                    if (newScore > existingScore) {
+                        map.set(id, item);
+                    }
+                }
+            });
+            return Array.from(map.values());
+        }
+
         let storedEntries = [];
         try {
             storedEntries = JSON.parse(localStorage.getItem(STORAGE_KEYS.ENTRIES)) || [];
         } catch(e) { storedEntries = []; }
-        // Pembersihan otomatis: Hapus seluruh data dummy sample lama (MAR-2026-001/002/003, Budi Santoso, dll)
+        // Pembersihan otomatis: Hapus seluruh data dummy sample lama & deduplikasi ID duplikat
         if (Array.isArray(storedEntries)) {
             storedEntries = storedEntries.filter(e => 
                 e && 
@@ -2432,6 +2488,7 @@
                 !String(e.mechName || '').toLowerCase().includes('dummy') &&
                 !String(e.mechName || '').toLowerCase().includes('contoh')
             );
+            storedEntries = deduplicateMarArray(storedEntries);
         } else {
             storedEntries = [];
         }
@@ -2465,47 +2522,26 @@
         let MASTER_CATEGORIES = storedCats;
 
         // ============================================================
-        // DEFAULT WORK ORDER DATA (Sesuai Format Sheet WO PT BSS)
+        // DEFAULT WORK ORDER DATA: Bersih tanpa data dummy sample
         // ============================================================
-        const DEFAULT_WO_DATA = [
-            { "NO WO": "11-0928", "NO ID": "BSS 301", "PROBLEM": "check engine blow by", "ACTION": "check engine blow by, cleaning breather pipe, running test", "START DATE": "17/09/2026", "START TIME": "08:00", "END DATE": "", "END TIME": "", "STATUS WO": "OPEN" },
-            { "NO WO": "11-0929", "NO ID": "BSS 911", "PROBLEM": "ptt radio bermasalah", "ACTION": "check radio, check and install dasbord kabin, check level and add oil engine, oil power steering", "START DATE": "17/09/2026", "START TIME": "08:30", "END DATE": "", "END TIME": "", "STATUS WO": "OPEN" },
-            { "NO WO": "11-0930", "NO ID": "BSS 102", "PROBLEM": "engine", "ACTION": "replace fuel filter, check line fuel system", "START DATE": "17/09/2026", "START TIME": "09:00", "END DATE": "", "END TIME": "", "STATUS WO": "OPEN" },
-            { "NO WO": "11-0931", "NO ID": "BSS 908", "PROBLEM": "dump tidak bisa naik", "ACTION": "replace bushing arm dump , replace bushing dump , replace lock arm dump , fill oil hidrolik", "START DATE": "17/09/2026", "START TIME": "09:15", "END DATE": "", "END TIME": "", "STATUS WO": "OPEN" },
-            { "NO WO": "11-0932", "NO ID": "BSS 921", "PROBLEM": "oil menetes dari transmisi", "ACTION": "replace seal crankshaft, replace flywheel, replace kampas kopling, replace booster kopling", "START DATE": "17/09/2026", "START TIME": "09:40", "END DATE": "", "END TIME": "", "STATUS WO": "OPEN" },
-            { "NO WO": "11-0933", "NO ID": "BSS 602", "PROBLEM": "join shaft pendek lepas", "ACTION": "install propeller shaft rear, replace and install bolt propeller shaft rear 4 pcs", "START DATE": "17/09/2026", "START TIME": "10:00", "END DATE": "", "END TIME": "", "STATUS WO": "OPEN" },
-            { "NO WO": "11-0934", "NO ID": "BSS 207", "PROBLEM": "low power", "ACTION": "check low power, adjust track", "START DATE": "17/09/2026", "START TIME": "10:30", "END DATE": "", "END TIME": "", "STATUS WO": "OPEN" },
-            { "NO WO": "11-0935", "NO ID": "BSS 601", "PROBLEM": "penambahan air radiator", "ACTION": "check level air radiator, add water coolant", "START DATE": "17/09/2026", "START TIME": "11:00", "END DATE": "17/09/2026", "END TIME": "11:30", "STATUS WO": "CLOSED" },
-            { "NO WO": "11-0936", "NO ID": "BSS 915", "PROBLEM": "cant start", "ACTION": "check can't start, repair and tigthening terminal battery", "START DATE": "17/09/2026", "START TIME": "11:15", "END DATE": "", "END TIME": "", "STATUS WO": "OPEN" },
-            { "NO WO": "11-0937", "NO ID": "BSS 809", "PROBLEM": "lampu utama mati", "ACTION": "check harnest dan bohlam lampu utama, replace bohlam lampu utama depan", "START DATE": "17/09/2026", "START TIME": "11:45", "END DATE": "17/09/2026", "END TIME": "12:30", "STATUS WO": "CLOSED" },
-            { "NO WO": "11-0938", "NO ID": "BSS 206", "PROBLEM": "oil engine dan air radiator kurang", "ACTION": "check level oil and air radiator, add oil engine dan water coolant", "START DATE": "17/09/2026", "START TIME": "13:00", "END DATE": "17/09/2026", "END TIME": "13:45", "STATUS WO": "CLOSED" },
-            { "NO WO": "11-0939", "NO ID": "BSS 906", "PROBLEM": "oil engine kurang dan pengecekan torque rod sebelah kanan", "ACTION": "check level oil engine dan air radiator, add oil engine, add water coolant, check torque rod", "START DATE": "17/09/2026", "START TIME": "13:30", "END DATE": "", "END TIME": "", "STATUS WO": "OPEN" },
-            { "NO WO": "11-0940", "NO ID": "BSS 912", "PROBLEM": "cant start dan pengecekan fuse", "ACTION": "check and repair terminal battery, check fuse box", "START DATE": "17/09/2026", "START TIME": "14:00", "END DATE": "", "END TIME": "", "STATUS WO": "OPEN" },
-            { "NO WO": "11-0941", "NO ID": "BSS 922", "PROBLEM": "pengecekan indikator radiator menyala", "ACTION": "check and cleaning sensor radiator, check level air radiator, add water coolant", "START DATE": "17/09/2026", "START TIME": "14:30", "END DATE": "17/09/2026", "END TIME": "15:15", "STATUS WO": "CLOSED" },
-            { "NO WO": "11-0942", "NO ID": "BSS 920", "PROBLEM": "perbaikan radio", "ACTION": "check radio, setting chanel radio", "START DATE": "17/09/2026", "START TIME": "15:00", "END DATE": "", "END TIME": "", "STATUS WO": "OPEN" },
-            { "NO WO": "11-0943", "NO ID": "BSS 112", "PROBLEM": "indikator engine l03", "ACTION": "cleaning sensor imv selenoid", "START DATE": "17/09/2026", "START TIME": "15:30", "END DATE": "17/09/2026", "END TIME": "16:15", "STATUS WO": "CLOSED" },
-            { "NO WO": "11-0944", "NO ID": "BSS 209", "PROBLEM": "lampu kerja mati", "ACTION": "check fuse and harnest lamp, replace fuse lamp, repair harnest dan kabel lamp", "START DATE": "17/09/2026", "START TIME": "16:00", "END DATE": "17/09/2026", "END TIME": "16:45", "STATUS WO": "CLOSED" },
-            { "NO WO": "11-0945", "NO ID": "BSS 608", "PROBLEM": "compressor ac", "ACTION": "replace compressor ac , flusing system ac , vakum add oil ac , fill preyon", "START DATE": "17/09/2026", "START TIME": "16:30", "END DATE": "17/09/2026", "END TIME": "17:45", "STATUS WO": "CLOSED" },
-            { "NO WO": "11-0946", "NO ID": "BSS 911", "PROBLEM": "perbaikan wiper", "ACTION": "repair wiper", "START DATE": "17/09/2026", "START TIME": "17:00", "END DATE": "17/09/2026", "END TIME": "17:30", "STATUS WO": "CLOSED" },
-            { "NO WO": "11-0947", "NO ID": "BSS 912", "PROBLEM": "kampas slip", "ACTION": "adjust kopling", "START DATE": "17/09/2026", "START TIME": "17:30", "END DATE": "17/09/2026", "END TIME": "18:30", "STATUS WO": "CLOSED" },
-            { "NO WO": "11-0948", "NO ID": "BSS 209", "PROBLEM": "track kendor", "ACTION": "adjust track", "START DATE": "17/09/2026", "START TIME": "18:00", "END DATE": "17/09/2026", "END TIME": "19:00", "STATUS WO": "CLOSED" },
-            { "NO WO": "11-0949", "NO ID": "BSS 922", "PROBLEM": "instal claim muffler", "ACTION": "replace gantungan muffler", "START DATE": "17/09/2026", "START TIME": "18:30", "END DATE": "17/09/2026", "END TIME": "19:15", "STATUS WO": "CLOSED" },
-            { "NO WO": "11-0950", "NO ID": "BSS 915", "PROBLEM": "ada rembesan oil gardan", "ACTION": "chek level oil gardan ( aman )", "START DATE": "17/09/2026", "START TIME": "19:00", "END DATE": "17/09/2026", "END TIME": "19:40", "STATUS WO": "CLOSED" },
-            { "NO WO": "11-0951", "NO ID": "BSS 911", "PROBLEM": "oil engine kurang", "ACTION": "add oil engine dan coolant", "START DATE": "17/09/2026", "START TIME": "19:30", "END DATE": "17/09/2026", "END TIME": "20:00", "STATUS WO": "CLOSED" },
-            { "NO WO": "11-0952", "NO ID": "BSS 909", "PROBLEM": "oil engine kurang", "ACTION": "add oil engine", "START DATE": "17/09/2026", "START TIME": "20:00", "END DATE": "17/09/2026", "END TIME": "20:30", "STATUS WO": "CLOSED" },
-            { "NO WO": "11-0953", "NO ID": "BSS 112", "PROBLEM": "eror l03", "ACTION": "add oil engine", "START DATE": "17/09/2026", "START TIME": "20:30", "END DATE": "17/09/2026", "END TIME": "21:00", "STATUS WO": "CLOSED" },
-            { "NO WO": "11-0954", "NO ID": "BSS 612", "PROBLEM": "kurang oil engine", "ACTION": "add oil engine", "START DATE": "17/09/2026", "START TIME": "21:00", "END DATE": "", "END TIME": "", "STATUS WO": "OPEN" },
-            { "NO WO": "11-0955", "NO ID": "BSS 806", "PROBLEM": "muncul panel radiator", "ACTION": "add preyon", "START DATE": "17/09/2026", "START TIME": "21:30", "END DATE": "17/09/2026", "END TIME": "22:15", "STATUS WO": "CLOSED" }
-        ];
+        const DEFAULT_WO_DATA = [];
 
         let storedWoData = [];
         try {
             storedWoData = JSON.parse(localStorage.getItem(STORAGE_KEYS.WO_DB)) || [];
         } catch(e) { storedWoData = []; }
-        if (!Array.isArray(storedWoData) || storedWoData.length === 0) {
-            storedWoData = DEFAULT_WO_DATA;
-            safeSetStorage(STORAGE_KEYS.WO_DB, DEFAULT_WO_DATA);
+        // Pembersihan otomatis: Hapus seluruh data dummy sample lama (11-0928 s/d 11-0955)
+        if (Array.isArray(storedWoData)) {
+            storedWoData = storedWoData.filter(w => {
+                const noWo = String(w && (w['NO WO'] || w.noWo || '')).trim();
+                const prob = String(w && (w['PROBLEM'] || w.problem || '')).toLowerCase();
+                const isSample = noWo.startsWith('11-09') || prob.includes('blow by') || prob.includes('ptt radio') || prob.includes('dump tidak bisa naik');
+                return noWo && !isSample;
+            });
+        } else {
+            storedWoData = [];
         }
+        safeSetStorage(STORAGE_KEYS.WO_DB, storedWoData);
         woStore = storedWoData;
 
         // ============================================================
@@ -2531,7 +2567,7 @@
          * c. Auto GET Fallback with cache buster
          * d. Offline Resilience (Fallback ke LocalStorage)
          */
-        async function fetchGAS(actionName, payloadData = {}, timeoutMs = 45000) {
+        async function fetchGAS(actionName, payloadData = {}) {
             // Mode 1: Native Apps Script Web App
             if (typeof google !== 'undefined' && google.script && google.script.run) {
                 return new Promise((resolve, reject) => {
@@ -2552,33 +2588,21 @@
             // Mode 2: External HTTP Fetch ke deployed GAS URL (Locked ke LOCKED_GAS_URL)
             const targetUrl = (LIVE_GAS_URL || LOCKED_GAS_URL || '').trim();
             if (!targetUrl) {
+                // Tidak ada URL GAS, fallback diam ke mode lokal
                 return { success: false, offline: true, message: 'GAS URL belum dikonfigurasi.' };
             }
-
-            const controller = new AbortController();
-            const timeoutTimer = setTimeout(() => controller.abort(), timeoutMs);
 
             try {
                 const response = await fetch(targetUrl, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // GAS aman dengan text/plain
                     body: JSON.stringify({ action: actionName, data: payloadData }),
-                    redirect: 'follow',
-                    signal: controller.signal
+                    redirect: 'follow'
                 });
-                clearTimeout(timeoutTimer);
-                const textRes = await response.text();
-                try {
-                    return JSON.parse(textRes);
-                } catch (e) {
-                    console.warn('Respons bukan format JSON valid:', textRes);
-                    return { success: false, message: 'Respons server bukan JSON valid.' };
-                }
+                const resJson = await response.json();
+                return resJson;
             } catch (postErr) {
-                clearTimeout(timeoutTimer);
                 console.warn('POST GAS gagal, mencoba GET fallback...', postErr);
-                const getController = new AbortController();
-                const getTimer = setTimeout(() => getController.abort(), timeoutMs);
                 try {
                     // Mode 3: GET Fallback
                     const cleanUrl = targetUrl.split('?')[0];
@@ -2589,18 +2613,10 @@
                     });
                     const getRes = await fetch(`${cleanUrl}?${params.toString()}`, {
                         method: 'GET',
-                        redirect: 'follow',
-                        signal: getController.signal
+                        redirect: 'follow'
                     });
-                    clearTimeout(getTimer);
-                    const getText = await getRes.text();
-                    try {
-                        return JSON.parse(getText);
-                    } catch (e) {
-                        return { success: false, message: 'Respons GET bukan JSON valid.' };
-                    }
+                    return await getRes.json();
                 } catch (getErr) {
-                    clearTimeout(getTimer);
                     console.error('Semua koneksi GAS gagal:', getErr);
                     return { success: false, error: getErr.toString(), offline: true };
                 }
@@ -3191,9 +3207,7 @@
                 id: currentRoleKey || 'mechanic_unknown'
             };
 
-            const randomSuffix = Math.random().toString(36).substring(2, 6).toUpperCase();
-            const timeSuffix = Date.now().toString(36).toUpperCase().slice(-4);
-            const uniqueId = `MAR-${new Date().getFullYear()}-${timeSuffix}${randomSuffix}`;
+            const uniqueId = `MAR-${new Date().getFullYear()}-${Date.now().toString(36).toUpperCase().slice(-5)}`;
             const newEntry = {
                 id: uniqueId,
                 date: document.getElementById('marTanggal').value,
@@ -3216,22 +3230,16 @@
 
             // Simpan Lokal
             marEntries.unshift(newEntry);
-            safeSetStorage(STORAGE_KEYS.ENTRIES, marEntries)
+            marEntries = deduplicateMarArray(marEntries);
+            safeSetStorage(STORAGE_KEYS.ENTRIES, marEntries);
 
             // Kirim ke GAS jika online
             if (LIVE_GAS_URL) {
                 fetchGAS('createMAR', newEntry).then(res => {
                     if (res && res.success) {
-                        showToast(`Laporan MAR #${newEntry.id} tersimpan di Google Sheets!`, 'success');
-                        updateGasSyncIndicator(true);
-                    } else {
-                        showToast(`Peringatan: Gagal kirim ke Google Sheets (${res?.message || 'Error'}). Tersimpan lokal.`, 'warning');
-                        updateGasSyncIndicator(false);
+                        showToast(`Laporan MAR ${newEntry.id} tersimpan di Google Sheets!`, 'success');
                     }
-                }).catch(err => {
-                    console.warn('Sync createMAR to GAS failed:', err);
-                    updateGasSyncIndicator(false);
-                });
+                }).catch(err => console.warn('Sync createMAR to GAS failed:', err));
             }
 
             // Reset Form
@@ -3336,7 +3344,7 @@
                     tr.innerHTML = `
                         <td class="px-4 py-3 font-medium text-slate-200">${formatDateIndo(item.date)}</td>
                         <td class="px-4 py-3 text-slate-300 font-medium">${item.shift || 'Shift 1'}</td>
-                        <td class="px-4 py-3 font-mono font-bold text-amber-400 tracking-tight">${item.woNumber}</td>
+                        <td class="px-4 py-3 font-mono font-bold text-amber-400 tracking-tight">${formatWoDisplay(item.woNumber)}</td>
                         <td class="px-4 py-3 font-mono font-bold text-slate-100">${item.codeUnit}</td>
                         <td class="px-4 py-3 font-mono text-slate-300">
                             <span>${item.timeStart} - ${item.timeStop}</span>
@@ -3365,7 +3373,7 @@
                         <div class="grid grid-cols-2 gap-2 bg-slate-950/70 p-2.5 rounded-xl border border-slate-800 text-xs">
                             <div>
                                 <span class="text-slate-400 block text-[10px] uppercase font-bold tracking-wider">No. WO</span>
-                                <span class="font-mono font-bold text-amber-400 tracking-tight">${item.woNumber}</span>
+                                <span class="font-mono font-bold text-amber-400 tracking-tight">${formatWoDisplay(item.woNumber)}</span>
                             </div>
                             <div>
                                 <span class="text-slate-400 block text-[10px] uppercase font-bold tracking-wider">Code Unit</span>
@@ -3471,7 +3479,7 @@
                     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-slate-950/70 p-3 rounded-xl border border-slate-800 text-xs">
                         <div>
                             <span class="text-slate-400 block text-[10px] uppercase font-bold tracking-wider">No. WO</span>
-                            <span class="font-mono font-bold text-amber-400">${item.woNumber}</span>
+                            <span class="font-mono font-bold text-amber-400">${formatWoDisplay(item.woNumber)}</span>
                         </div>
                         <div>
                             <span class="text-slate-400 block text-[10px] uppercase font-bold tracking-wider">Code Unit</span>
@@ -3563,7 +3571,7 @@
                         <td class="px-4 py-3 font-medium text-slate-200">${formatDateIndo(item.date)}</td>
                         <td class="px-4 py-3 text-slate-300 font-medium">${item.shift || 'Shift 1'}</td>
                         <td class="px-4 py-3 font-bold text-slate-100">${item.mechName} <span class="text-slate-400 font-normal">(${item.mechPosition || 'Mekanik'})</span></td>
-                        <td class="px-4 py-3 font-mono font-bold text-amber-400">${item.woNumber}</td>
+                        <td class="px-4 py-3 font-mono font-bold text-amber-400">${formatWoDisplay(item.woNumber)}</td>
                         <td class="px-4 py-3 font-mono font-bold text-slate-100">${item.codeUnit}</td>
                         <td class="px-4 py-3 font-mono">
                             <span>${item.timeStart} - ${item.timeStop}</span>
@@ -3596,7 +3604,7 @@
                         <div class="grid grid-cols-2 gap-2 bg-slate-950/70 p-2.5 rounded-xl border border-slate-800 text-xs">
                             <div>
                                 <span class="text-slate-400 block text-[10px] uppercase font-bold tracking-wider">No. WO</span>
-                                <span class="font-mono font-bold text-amber-400 tracking-tight">${item.woNumber}</span>
+                                <span class="font-mono font-bold text-amber-400 tracking-tight">${formatWoDisplay(item.woNumber)}</span>
                             </div>
                             <div>
                                 <span class="text-slate-400 block text-[10px] uppercase font-bold tracking-wider">Code Unit</span>
@@ -3622,19 +3630,27 @@
 
         // Approve MAR
         async function approveMAR(id) {
-            const item = marEntries.find(i => i.id === id);
-            if (!item) return;
+            const targetItems = marEntries.filter(i => i.id === id);
+            if (targetItems.length === 0) return;
 
-            item.validationStatus = 'Approved';
-            item.rejectionNote = '';
-            item.validatedBy = currentUser ? `${currentUser.name} (${currentUser.roleName})` : 'Atasan Plant';
-            item.validatedAt = new Date().toLocaleString('id-ID');
+            const validatedBy = currentUser ? `${currentUser.name} (${currentUser.roleName})` : 'Atasan Plant';
+            const validatedAt = new Date().toLocaleString('id-ID');
 
+            targetItems.forEach(item => {
+                item.validationStatus = 'Approved';
+                item.rejectionNote = '';
+                item.validatedBy = validatedBy;
+                item.validatedAt = validatedAt;
+            });
+
+            // Deduplikasi agar ID yang sama tidak tertinggal di antrean
+            marEntries = deduplicateMarArray(marEntries);
             safeSetStorage(STORAGE_KEYS.ENTRIES, marEntries);
+
             renderForemanViews();
             renderAdminViews();
             updateMechanicStats();
-            showToast(`Menyimpan persetujuan MAR #${id} ke Google Sheets...`, 'info');
+            showToast(`Laporan MAR ${id} telah disetujui (Approved)!`, 'success');
 
             const hasGAS = (typeof google !== 'undefined' && google.script && google.script.run) || (LIVE_GAS_URL && LIVE_GAS_URL.trim().length > 0);
             if (hasGAS) {
@@ -3643,20 +3659,15 @@
                         id: id,
                         status: 'Approved',
                         rejectionNote: '',
-                        validatedBy: item.validatedBy,
-                        entry: item
+                        validatedBy: validatedBy
                     });
                     if (res && res.success) {
-                        showToast(`Status MAR #${id} berhasil disetujui & langsung tersinkron ke Google Sheets!`, 'success');
-                        updateGasSyncIndicator(true);
-                    } else {
-                        showToast(`Peringatan: Gagal sinkron ke Google Sheets (${res?.message || 'Error'}). Tersimpan lokal.`, 'warning');
-                        updateGasSyncIndicator(false);
+                        console.log(`GAS MAR ${id} updated to Approved`);
+                    } else if (res && !res.success) {
+                        showToast(`Peringatan: Gagal sinkron ke Google Sheets: ${res.error || 'Unknown error'}`, 'warning');
                     }
                 } catch (err) {
                     console.warn('Sync approve to GAS failed:', err);
-                    showToast(`Koneksi Google Sheets terganggu (${err.message}). Tersimpan lokal.`, 'warning');
-                    updateGasSyncIndicator(false);
                 }
             }
         }
@@ -3680,42 +3691,43 @@
                 return;
             }
 
-            const item = marEntries.find(i => i.id === id);
-            if (item) {
+            const targetItems = marEntries.filter(i => i.id === id);
+            if (targetItems.length === 0) return;
+
+            const validatedBy = currentUser ? `${currentUser.name} (${currentUser.roleName})` : 'Atasan Plant';
+            const validatedAt = new Date().toLocaleString('id-ID');
+
+            targetItems.forEach(item => {
                 item.validationStatus = 'Rejected';
                 item.rejectionNote = reason;
-                item.validatedBy = currentUser ? `${currentUser.name} (${currentUser.roleName})` : 'Atasan Plant';
-                item.validatedAt = new Date().toLocaleString('id-ID');
+                item.validatedBy = validatedBy;
+                item.validatedAt = validatedAt;
+            });
 
-                safeSetStorage(STORAGE_KEYS.ENTRIES, marEntries);
-                closeRejectModal();
-                renderForemanViews();
-                renderAdminViews();
-                updateMechanicStats();
-                showToast(`Mengirim penolakan MAR #${id} ke Google Sheets...`, 'info');
+            marEntries = deduplicateMarArray(marEntries);
+            safeSetStorage(STORAGE_KEYS.ENTRIES, marEntries);
+            closeRejectModal();
+            renderForemanViews();
+            renderAdminViews();
+            updateMechanicStats();
+            showToast(`Laporan MAR ${id} telah ditolak.`, 'warning');
 
-                const hasGAS = (typeof google !== 'undefined' && google.script && google.script.run) || (LIVE_GAS_URL && LIVE_GAS_URL.trim().length > 0);
-                if (hasGAS) {
-                    try {
-                        const res = await fetchGAS('updateMARStatus', {
-                            id: id,
-                            status: 'Rejected',
-                            rejectionNote: reason,
-                            validatedBy: item.validatedBy,
-                            entry: item
-                        });
-                        if (res && res.success) {
-                            showToast(`Penolakan MAR #${id} berhasil diperbarui di Google Sheets!`, 'success');
-                            updateGasSyncIndicator(true);
-                        } else {
-                            showToast(`Peringatan: Gagal sinkron ke Google Sheets (${res?.message || 'Error'}). Tersimpan lokal.`, 'warning');
-                            updateGasSyncIndicator(false);
-                        }
-                    } catch (err) {
-                        console.warn('Sync reject to GAS failed:', err);
-                        showToast(`Koneksi Google Sheets terganggu (${err.message}). Tersimpan lokal.`, 'warning');
-                        updateGasSyncIndicator(false);
+            const hasGAS = (typeof google !== 'undefined' && google.script && google.script.run) || (LIVE_GAS_URL && LIVE_GAS_URL.trim().length > 0);
+            if (hasGAS) {
+                try {
+                    const res = await fetchGAS('updateMARStatus', {
+                        id: id,
+                        status: 'Rejected',
+                        rejectionNote: reason,
+                        validatedBy: validatedBy
+                    });
+                    if (res && res.success) {
+                        console.log(`GAS MAR ${id} updated to Rejected`);
+                    } else if (res && !res.success) {
+                        showToast(`Peringatan: Gagal sinkron ke Google Sheets: ${res.error || 'Unknown error'}`, 'warning');
                     }
+                } catch (err) {
+                    console.warn('Sync reject to GAS failed:', err);
                 }
             }
         }
@@ -3730,10 +3742,10 @@
 
             return marEntries.filter(item => {
                 let matchSearch = !searchQuery || 
-                    item.woNumber.toLowerCase().includes(searchQuery) ||
-                    item.codeUnit.toLowerCase().includes(searchQuery) ||
-                    item.mechName.toLowerCase().includes(searchQuery) ||
-                    item.description.toLowerCase().includes(searchQuery);
+                    String(item.woNumber || '').toLowerCase().includes(searchQuery) ||
+                    String(item.codeUnit || '').toLowerCase().includes(searchQuery) ||
+                    String(item.mechName || '').toLowerCase().includes(searchQuery) ||
+                    String(item.description || '').toLowerCase().includes(searchQuery);
 
                 let matchDate = true;
                 if (startDate && endDate) {
@@ -3862,7 +3874,7 @@
                             </div>
                             <div>
                                 <span class="text-slate-400 block text-[10px] uppercase font-bold tracking-wider">No. WO</span>
-                                <span class="font-mono font-bold text-amber-400">${item.woNumber}</span>
+                                <span class="font-mono font-bold text-amber-400">${formatWoDisplay(item.woNumber)}</span>
                             </div>
                             <div>
                                 <span class="text-slate-400 block text-[10px] uppercase font-bold tracking-wider">Unit & Jam</span>
@@ -4342,7 +4354,7 @@
                         <td class="px-4 py-3 text-slate-300 font-medium">${item.shift || 'Shift 1'}</td>
                         <td class="px-4 py-3 font-bold text-slate-100">${item.mechName}</td>
                         <td class="px-4 py-3 text-slate-400">${item.mechPosition}</td>
-                        <td class="px-4 py-3 font-mono font-bold text-amber-400">${item.woNumber}</td>
+                        <td class="px-4 py-3 font-mono font-bold text-amber-400">${formatWoDisplay(item.woNumber)}</td>
                         <td class="px-4 py-3 font-mono font-bold text-slate-100">${item.codeUnit}</td>
                         <td class="px-4 py-3 font-mono">
                             <span>${item.timeStart} - ${item.timeStop}</span>
@@ -4391,7 +4403,7 @@
                         <div class="grid grid-cols-2 gap-2 bg-slate-950/70 p-2.5 rounded-xl border border-slate-800 text-xs">
                             <div>
                                 <span class="text-slate-400 block text-[10px] uppercase font-bold tracking-wider">No. WO</span>
-                                <span class="font-mono font-bold text-amber-400 tracking-tight">${item.woNumber}</span>
+                                <span class="font-mono font-bold text-amber-400 tracking-tight">${formatWoDisplay(item.woNumber)}</span>
                             </div>
                             <div>
                                 <span class="text-slate-400 block text-[10px] uppercase font-bold tracking-wider">Code Unit</span>
@@ -4461,7 +4473,7 @@
                     '<td>' + (item.shift || '') + '</td>' +
                     '<td>' + (item.mechName || '') + '</td>' +
                     '<td>' + (item.mechPosition || '') + '</td>' +
-                    '<td>' + (item.woNumber || '') + '</td>' +
+                    '<td>' + (formatWoDisplay(item.woNumber) || '') + '</td>' +
                     '<td>' + (item.codeUnit || '') + '</td>' +
                     '<td>' + (item.timeStart || '') + '</td>' +
                     '<td>' + (item.timeStop || '') + '</td>' +
@@ -4522,7 +4534,7 @@
                 const duration = calculateDuration(item.timeStart, item.timeStop);
                 const row = [
                     item.id, item.date, item.shift, item.mechName, item.mechPosition,
-                    item.woNumber, item.codeUnit, item.timeStart, item.timeStop, duration,
+                    formatWoDisplay(item.woNumber), item.codeUnit, item.timeStart, item.timeStop, duration,
                     item.category, item.description, item.statusUnit, item.validationStatus,
                     item.rejectionNote, item.validatedBy
                 ];
@@ -4624,8 +4636,8 @@
                             !String(e.mechName || '').toLowerCase().includes('dummy') &&
                             !String(e.mechName || '').toLowerCase().includes('contoh')
                         );
-                        marEntries = cleanEntries;
-                        safeSetStorage(STORAGE_KEYS.ENTRIES, marEntries)
+                        marEntries = deduplicateMarArray(cleanEntries);
+                        safeSetStorage(STORAGE_KEYS.ENTRIES, marEntries);
                         hasChanges = true;
                     }
                     if (res.data.users) {
@@ -4642,7 +4654,12 @@
                         populateCategorySelects();
                     }
                     if (Array.isArray(res.data.wo)) {
-                        woStore = res.data.wo;
+                        const cleanWo = res.data.wo.filter(w => {
+                            const noWo = String(w && (w['NO WO'] || w.noWo || '')).trim();
+                            const prob = String(w && (w['PROBLEM'] || w.problem || '')).toLowerCase();
+                            return noWo && !noWo.startsWith('11-09') && !prob.includes('blow by') && !prob.includes('ptt radio') && !prob.includes('dump tidak bisa naik');
+                        });
+                        woStore = cleanWo;
                         safeSetStorage(STORAGE_KEYS.WO_DB, woStore);
                         populateWoDatalists();
                     }
@@ -4655,8 +4672,8 @@
                         } else if (currentRoleKey && currentRoleKey.startsWith('foreman_')) {
                             renderPendingCards();
                         } else if (currentRoleKey && currentRoleKey.startsWith('mechanic_')) {
-                            renderHistoryTable();
-                            updateMechStats();
+                            if (typeof renderMechanicTable === 'function') renderMechanicTable();
+                            if (typeof updateMechanicStats === 'function') updateMechanicStats();
                         }
                     }
 
@@ -4693,6 +4710,61 @@
                 closeGasSettingsModal();
             } catch (e) {
                 showToast('Gagal melakukan sinkronisasi batch: ' + e.toString(), 'error');
+            }
+        }
+
+        async function cleanupAllSampleDataUI() {
+            if (!confirm('Hapus seluruh data sample/dummy (Work Order dummy 11-09xx & MAR dummy) dari penyimpanan browser dan Google Sheets?\n\nCatatan: Data operasional asli Anda tidak akan terhapus.')) {
+                return;
+            }
+
+            try {
+                // 1. Bersihkan Work Order sample dari memori & localStorage
+                storedWoData = (storedWoData || []).filter(w => {
+                    const noWo = String(w && (w['NO WO'] || w.noWo || '')).trim();
+                    const prob = String(w && (w['PROBLEM'] || w.problem || '')).toLowerCase();
+                    const isSample = noWo.startsWith('11-09') || prob.includes('blow by') || prob.includes('ptt radio') || prob.includes('dump tidak bisa naik');
+                    return noWo && !isSample;
+                });
+                safeSetStorage(STORAGE_KEYS.WO_DB, storedWoData);
+                woStore = storedWoData;
+                populateWoDatalists();
+
+                // 2. Bersihkan MAR sample dari memori & localStorage
+                if (Array.isArray(marEntries)) {
+                    marEntries = marEntries.filter(e => 
+                        e && 
+                        e.id && 
+                        !e.id.startsWith('MAR-2026-00') && 
+                        e.mechName !== 'Budi Santoso' &&
+                        !String(e.mechName || '').toLowerCase().includes('dummy') &&
+                        !String(e.mechName || '').toLowerCase().includes('sample') &&
+                        !String(e.mechName || '').toLowerCase().includes('contoh')
+                    );
+                    marEntries = deduplicateMarArray(marEntries);
+                    safeSetStorage(STORAGE_KEYS.ENTRIES, marEntries);
+                }
+
+                // 3. Render ulang tampilan aktif
+                if (currentRoleKey && currentRoleKey.startsWith('admin_')) {
+                    renderAdminViews();
+                } else if (currentRoleKey && currentRoleKey.startsWith('foreman_')) {
+                    renderPendingCards();
+                } else if (currentRoleKey && currentRoleKey.startsWith('mechanic_')) {
+                    if (typeof renderMechanicTable === 'function') renderMechanicTable();
+                    if (typeof updateMechanicStats === 'function') updateMechanicStats();
+                }
+
+                showToast('Data sample lokal berhasil dibersihkan!', 'success');
+
+                // 4. Bersihkan juga di Google Sheets jika terhubung
+                const res = await fetchGAS('cleanupSampleData');
+                if (res && res.success) {
+                    showToast(res.message || 'Data sample di Google Sheets berhasil dibersihkan!', 'success');
+                }
+            } catch (err) {
+                console.warn('Cleanup error:', err);
+                showToast('Pembersihan lokal selesai. (Cloud: ' + (err.message || 'offline') + ')', 'info');
             }
         }
 
@@ -5007,7 +5079,7 @@
                             <p class="text-xs text-slate-300">${m.description}</p>
                             <div class="text-[10px] text-slate-400 flex flex-wrap gap-2 pt-1 border-t border-slate-900">
                                 <span><i class="fa-regular fa-calendar mr-1"></i>${m.date} (Shift: ${m.shift})</span>
-                                <span><i class="fa-solid fa-hashtag mr-1 text-amber-400"></i>WO: ${m.woNumber || m.wo || '-'}</span>
+                                <span><i class="fa-solid fa-hashtag mr-1 text-amber-400"></i>WO: ${formatWoDisplay(m.woNumber || m.wo || '-')}</span>
                                 <span><i class="fa-regular fa-clock mr-1"></i>${m.timeStart} - ${m.timeStop || m.timeEnd || ''}</span>
                                 ${(m.rejectionNote || m.validatorNote) ? `<span class="text-sky-300 italic">Catatan: "${m.rejectionNote || m.validatorNote}"</span>` : ''}
                             </div>
@@ -5212,7 +5284,7 @@
                         </td>
                         <td class="p-3">
                             <span class="font-bold text-amber-400 block">${item.codeUnit}</span>
-                            <span class="text-xs text-slate-400 font-mono">WO: ${item.woNumber || item.wo || '-'}</span>
+                            <span class="text-xs text-slate-400 font-mono">WO: ${formatWoDisplay(item.woNumber || item.wo || '-')}</span>
                         </td>
                         <td class="p-3">
                             <span class="text-slate-200 font-medium block">${item.category}</span>
@@ -5299,7 +5371,7 @@
                     <div class="grid grid-cols-2 gap-2 pb-2 border-b border-slate-800">
                         <div><strong class="text-slate-400">Mekanik:</strong> <span class="text-white font-semibold">${item.mechName || item.mechanicName}</span></div>
                         <div><strong class="text-slate-400">Tanggal:</strong> <span class="text-white">${item.date} (Shift: ${item.shift})</span></div>
-                        <div><strong class="text-slate-400">No. WO:</strong> <span class="text-amber-400 font-mono font-bold">${item.woNumber || item.wo || '-'}</span></div>
+                        <div><strong class="text-slate-400">No. WO:</strong> <span class="text-amber-400 font-mono font-bold">${formatWoDisplay(item.woNumber || item.wo || '-')}</span></div>
                         <div><strong class="text-slate-400">Unit:</strong> <span class="text-white font-bold">${item.codeUnit}</span></div>
                         <div class="col-span-2"><strong class="text-slate-400">Kategori:</strong> <span class="text-white">${item.category}</span></div>
                     </div>
@@ -5335,48 +5407,41 @@
                 return;
             }
 
-            const item = marEntries.find(x => x.id === activeValidatingId);
-            if (item) {
-                item.validationStatus = decision;
-                item.status = decision;
-                item.rejectionNote = note;
-                item.validatorNote = note || (decision === 'Approved' ? 'Disetujui oleh SPV Plant.' : 'Ditolak untuk revisi.');
-                item.validatedBy = currentUser ? `${currentUser.name} (${currentUser.roleName || 'SPV'})` : 'SPV Plant';
-                item.validatedAt = new Date().toLocaleString('id-ID');
+            const targetItems = marEntries.filter(x => x.id === activeValidatingId);
+            if (targetItems.length > 0) {
+                const validatedBy = currentUser ? `${currentUser.name} (${currentUser.roleName || 'SPV'})` : 'SPV Plant';
+                const validatedAt = new Date().toLocaleString('id-ID');
+                const vNote = note || (decision === 'Approved' ? 'Disetujui oleh SPV Plant.' : 'Ditolak untuk revisi.');
 
+                targetItems.forEach(item => {
+                    item.validationStatus = decision;
+                    item.status = decision;
+                    item.rejectionNote = note;
+                    item.validatorNote = vNote;
+                    item.validatedBy = validatedBy;
+                    item.validatedAt = validatedAt;
+                });
+
+                marEntries = deduplicateMarArray(marEntries);
                 safeSetStorage(STORAGE_KEYS.ENTRIES, marEntries);
-                closeSpvModal();
-                renderSupervisorQueue();
-                renderForemanViews();
-                renderAdminViews();
-                updateMechanicStats();
-
-                showToast(`Menyimpan validasi MAR #${activeValidatingId} (${decision}) ke Google Sheets...`, 'info');
 
                 const hasGAS = (typeof google !== 'undefined' && google.script && google.script.run) || (LIVE_GAS_URL && LIVE_GAS_URL.trim().length > 0);
                 if (hasGAS) {
-                    try {
-                        const res = await fetchGAS('updateMARStatus', {
-                            id: item.id,
-                            status: decision,
-                            rejectionNote: note,
-                            validatedBy: item.validatedBy,
-                            entry: item
-                        });
-                        if (res && res.success) {
-                            showToast(`Status MAR #${activeValidatingId} berhasil di-update (${decision}) di Google Sheets!`, decision === 'Approved' ? 'success' : 'warning');
-                            updateGasSyncIndicator(true);
-                        } else {
-                            showToast(`Gagal sinkron ke Google Sheets: ${res?.message || 'Error'}. Tersimpan lokal.`, 'warning');
-                            updateGasSyncIndicator(false);
-                        }
-                    } catch (err) {
-                        console.warn('GAS sync status failed:', err);
-                        showToast(`Koneksi Google Sheets terganggu (${err.message}). Tersimpan lokal.`, 'warning');
-                        updateGasSyncIndicator(false);
-                    }
+                    fetchGAS('updateMARStatus', {
+                        id: activeValidatingId,
+                        status: decision,
+                        rejectionNote: note,
+                        validatedBy: validatedBy
+                    }).catch(err => console.warn('GAS sync status failed:', err));
                 }
             }
+
+            closeSpvModal();
+            renderSupervisorQueue();
+            renderForemanViews();
+            renderAdminViews();
+            updateMechanicStats();
+            showToast(`Laporan MAR ${activeValidatingId} berhasil di-update: ${decision}`, decision === 'Approved' ? 'success' : 'warning');
         }
 
         // 24. renderMechanicDashboard()
@@ -5419,7 +5484,7 @@
                     <p><strong class="text-slate-400">ID Laporan:</strong> <span class="font-mono font-bold text-amber-400">${item.id}</span></p>
                     <p><strong class="text-slate-400">Mekanik:</strong> <span class="text-white">${item.mechName || item.mechanicName}</span> (${item.mechPosition || item.role || '-'})</p>
                     <p><strong class="text-slate-400">Tanggal &amp; Shift:</strong> <span class="text-white">${item.date} (Shift: ${item.shift})</span></p>
-                    <p><strong class="text-slate-400">No. WO &amp; Unit:</strong> <span class="text-white">${item.woNumber || item.wo || '-'} &bull; ${item.codeUnit}</span></p>
+                    <p><strong class="text-slate-400">No. WO &amp; Unit:</strong> <span class="text-white">${formatWoDisplay(item.woNumber || item.wo || '-')} &bull; ${item.codeUnit}</span></p>
                     <p><strong class="text-slate-400">Waktu Kerja:</strong> <span class="text-white">${item.timeStart} s.d ${item.timeStop || item.timeEnd || ''}</span></p>
                     <p><strong class="text-slate-400">Kategori:</strong> <span class="text-white font-semibold">${item.category}</span></p>
                     <p><strong class="text-slate-400">Status Validasi:</strong> <span class="font-bold text-amber-400">${st}</span></p>
