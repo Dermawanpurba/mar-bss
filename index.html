@@ -3191,7 +3191,9 @@
                 id: currentRoleKey || 'mechanic_unknown'
             };
 
-            const uniqueId = `MAR-${new Date().getFullYear()}-${Date.now().toString(36).toUpperCase().slice(-5)}`;
+            const randomSuffix = Math.random().toString(36).substring(2, 6).toUpperCase();
+            const timeSuffix = Date.now().toString(36).toUpperCase().slice(-4);
+            const uniqueId = `MAR-${new Date().getFullYear()}-${timeSuffix}${randomSuffix}`;
             const newEntry = {
                 id: uniqueId,
                 date: document.getElementById('marTanggal').value,
