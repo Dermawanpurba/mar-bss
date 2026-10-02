@@ -6,7 +6,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="theme-color" content="#f1f5f9">
+    <meta name="theme-color" content="#090d16">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="mobile-web-app-capable" content="yes">
@@ -138,14 +138,48 @@
         }
 
         /* Focus rings (shadcn/ui style) */
-        input:focus, select:focus, textarea:focus {
+        input:focus, select:focus, textarea:focus, button:focus-visible {
             outline: none !important;
             border-color: #f59e0b !important;
             box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.25) !important;
         }
-        body.theme-cerah input:focus, body.theme-cerah select:focus, body.theme-cerah textarea:focus {
+        body.theme-cerah input:focus, body.theme-cerah select:focus, body.theme-cerah textarea:focus, body.theme-cerah button:focus-visible {
             border-color: #d97706 !important;
             box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.2) !important;
+        }
+
+        /* =========================================================================
+           PREFERS-REDUCED-MOTION (WCAG 2.3.3 ACCESSIBILITY RESILIENCE)
+           Intentional alternatives that preserve state feedback without vestibular triggers.
+           ========================================================================= */
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.05s !important;
+                scroll-behavior: auto !important;
+            }
+            .interactive-lift:hover {
+                transform: none !important;
+            }
+            button:active:not(:disabled) {
+                transform: none !important;
+            }
+            .card-3d-wrap {
+                transition: opacity 0.2s ease !important;
+                transform: none !important;
+            }
+            .card-3d-wrap.flipped .card-front {
+                display: none !important;
+            }
+            .card-3d-wrap.flipped .card-back {
+                display: block !important;
+                transform: none !important;
+                position: relative !important;
+            }
+            .fa-spin, .animate-pulse, .animate-spin, .animate-bounce {
+                animation: none !important;
+            }
         }
 
         /* Active tab indicator */
@@ -216,14 +250,17 @@
             background-color: #090d16 !important;
             color: #f8fafc !important;
         }
-        /* Headings & Titles in Dark Mode */
+        /* Headings & Typographic Scale (Major Third 1.25x Ratio) */
+        h1 { font-size: 1.875rem !important; line-height: 2.25rem !important; font-weight: 800 !important; letter-spacing: -0.025em !important; }
+        h2 { font-size: 1.5rem !important; line-height: 2rem !important; font-weight: 700 !important; letter-spacing: -0.02em !important; }
+        h3 { font-size: 1.25rem !important; line-height: 1.75rem !important; font-weight: 700 !important; letter-spacing: -0.015em !important; }
+        h4 { font-size: 1.125rem !important; line-height: 1.5rem !important; font-weight: 600 !important; letter-spacing: -0.01em !important; }
+
         body:not(.theme-cerah) h1,
         body:not(.theme-cerah) h2,
         body:not(.theme-cerah) h3,
         body:not(.theme-cerah) h4 {
             color: #ffffff !important;
-            font-weight: 700;
-            letter-spacing: -0.02em;
         }
         /* Labels in Dark Mode */
         body:not(.theme-cerah) label {
@@ -682,7 +719,7 @@
             line-height: 70px;
             font-size: 1.35rem;
             text-align: center;
-            transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.3s;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s;
             color: var(--nav-icon-inactive);
         }
 
@@ -695,7 +732,7 @@
             position: absolute;
             color: var(--nav-text-active);
             font-weight: 700;
-            font-size: 0.65rem;
+            font-size: 0.72rem;
             letter-spacing: 0.02em;
             transition: transform 0.35s ease, opacity 0.35s ease;
             opacity: 0;
@@ -719,7 +756,7 @@
             background: var(--nav-circle-bg);
             border-radius: 50%;
             border: 5px solid var(--nav-circle-border);
-            transition: transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
             box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
             z-index: 1;
             pointer-events: none;
@@ -819,8 +856,8 @@
                 </button>
 
                 <!-- Sync Status Pill & GAS Settings Button -->
-                <button onclick="openGasSettingsModal()" id="btnGasStatus" title="Status Koneksi Google Sheets" class="text-xs bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 px-2.5 py-1.5 sm:px-3 rounded-xl flex items-center space-x-1.5 sm:space-x-2 transition cursor-pointer min-h-[36px]">
-                    <span id="syncDot" class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <button onclick="openGasSettingsModal()" id="btnGasStatus" title="Status Koneksi Google Sheets" aria-label="Status Koneksi Google Sheets" class="text-xs bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 px-3 py-2 rounded-xl flex items-center space-x-1.5 sm:space-x-2 transition cursor-pointer min-h-[44px]">
+                    <span id="syncDot" class="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-emerald-400 ring-2 ring-emerald-400/30"></span>
                     <span id="syncStatusText" class="text-slate-300 font-medium text-[11px] hidden md:inline">Google Sheets Connected</span>
                     <i class="fa-solid fa-cloud text-emerald-400 text-xs"></i>
                 </button>
@@ -871,7 +908,7 @@
                         <div>
                             <!-- Header Logo Arc & Brand Info -->
                             <div class="text-center space-y-2 mb-6">
-                                <div class="inline-flex p-3 rounded-2xl bg-slate-950 border border-slate-800 shadow-inner mb-1">
+                                <div class="inline-flex p-3 rounded-2xl bg-slate-950/60 mb-1">
                                     <i class="fa-solid fa-user-shield text-2xl text-yellow-400"></i>
                                 </div>
                                 <h2 class="text-2xl font-extrabold tracking-tight text-white">Sign In</h2>
@@ -1072,8 +1109,8 @@
                 </div>
 
                 <form id="marForm" onsubmit="handleMarSubmit(event)" class="space-y-4 sm:space-y-6">
-                    <!-- Header Profile Data (Readonly & Shift Input) -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 bg-slate-950/70 p-3.5 sm:p-4 rounded-xl border border-slate-800">
+                    <!-- Header Profile Data (Readonly & Shift Input - Flattened Grid) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 pb-4 border-b border-slate-800/80">
                         <div>
                             <label class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Nama Mechanic</label>
                             <input type="text" id="marMechName" readonly class="w-full bg-slate-900 border border-slate-800 text-slate-200 text-sm rounded-xl p-2.5 font-semibold focus:outline-none min-h-[44px]">
@@ -1148,7 +1185,7 @@
                         </div>
 
                         <div class="flex items-end sm:col-span-2 lg:col-span-1">
-                            <div class="text-xs text-slate-400 bg-slate-950/80 p-3 rounded-xl border border-slate-800 w-full flex items-center gap-2">
+                            <div class="text-xs text-slate-400 bg-slate-950/50 p-3 rounded-xl border border-slate-800/60 w-full flex items-center gap-2">
                                 <i class="fa-solid fa-circle-info text-amber-400 text-sm shrink-0"></i>
                                 <span>Laporan diverifikasi oleh Foreman Plant sebelum masuk KPI resmi.</span>
                             </div>
@@ -1216,7 +1253,7 @@
                     <!-- Desktop Table View (Khusus Layar md: dan ke atas) -->
                     <div class="hidden md:block overflow-x-auto">
                         <table class="w-full text-sm text-left text-slate-300">
-                            <thead class="text-xs uppercase bg-slate-950 text-slate-400 border-b border-slate-800">
+                            <thead class="text-xs uppercase text-slate-400 border-b border-slate-800 bg-transparent">
                                 <tr>
                                     <th class="px-4 py-3">Tanggal</th>
                                     <th class="px-4 py-3">Shift</th>
@@ -1249,20 +1286,41 @@
                             <p class="text-xs text-slate-400 mt-1">Perhitungan otomatis kepatuhan K3LH P5M (20%), Housekeeping 5S (20%), dan Produktivitas MAR (60%).</p>
                         </div>
                         <div class="flex items-center gap-2">
-                            <label class="text-xs font-semibold text-slate-400 whitespace-nowrap">Filter Periode:</label>
-                            <select id="appraisal-month-filter" onchange="calculateAppraisal()" class="bg-slate-950 border border-slate-700 text-xs text-white rounded-xl px-3 py-2 focus:ring-2 focus:ring-amber-500 cursor-pointer min-h-[40px]">
+                            <label for="appraisal-month-filter" class="text-xs font-semibold text-slate-400 whitespace-nowrap">Filter Periode:</label>
+                            <select id="appraisal-month-filter" aria-label="Filter Periode Penilaian Mekanik" onchange="calculateAppraisal()" class="bg-slate-950 border border-slate-700 text-xs text-white rounded-xl px-3 py-2 focus:ring-2 focus:ring-amber-500 cursor-pointer min-h-[44px]">
                                 <option value="ALL">Semua Periode</option>
+                                <option value="2027-12">Desember 2027</option>
+                                <option value="2027-11">November 2027</option>
+                                <option value="2027-10">Oktober 2027</option>
+                                <option value="2027-09">September 2027</option>
+                                <option value="2027-08">Agustus 2027</option>
+                                <option value="2027-07">Juli 2027</option>
+                                <option value="2027-06">Juni 2027</option>
+                                <option value="2027-05">Mei 2027</option>
+                                <option value="2027-04">April 2027</option>
+                                <option value="2027-03">Maret 2027</option>
+                                <option value="2027-02">Februari 2027</option>
+                                <option value="2027-01">Januari 2027</option>
+                                <option value="2026-12">Desember 2026</option>
+                                <option value="2026-11">November 2026</option>
+                                <option value="2026-10">Oktober 2026</option>
                                 <option value="2026-09" selected>September 2026</option>
                                 <option value="2026-08">Agustus 2026</option>
                                 <option value="2026-07">Juli 2026</option>
+                                <option value="2026-06">Juni 2026</option>
+                                <option value="2026-05">Mei 2026</option>
+                                <option value="2026-04">April 2026</option>
+                                <option value="2026-03">Maret 2026</option>
+                                <option value="2026-02">Februari 2026</option>
+                                <option value="2026-01">Januari 2026</option>
                             </select>
                         </div>
                     </div>
 
-                    <!-- 3 Score Breakdown Cards -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <!-- P5M Card -->
-                        <div class="bg-slate-950/70 border border-amber-500/20 rounded-xl p-4 space-y-2 relative overflow-hidden">
+                    <!-- 3 Score Breakdown Metrics (Flattened Unified Bento Grid, Zero Nested Cards) -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-slate-800 bg-slate-950/40 rounded-xl border border-slate-800/80 overflow-hidden">
+                        <!-- P5M Metric -->
+                        <div class="p-4 sm:p-5 space-y-2">
                             <div class="flex items-center justify-between">
                                 <span class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
                                     <i class="fa-solid fa-comments"></i> 1. Kegiatan P5M
@@ -1270,14 +1328,14 @@
                                 <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30">Bobot 20%</span>
                             </div>
                             <div class="flex items-baseline justify-between pt-2">
-                                <div id="score-p5m" class="text-2xl font-black text-white">0 / 100</div>
+                                <div id="score-p5m" class="text-2xl sm:text-3xl font-black text-white">0 / 100</div>
                                 <div id="val-p5m-count" class="text-xs text-slate-400">0 Laporan</div>
                             </div>
                             <p class="text-[11px] text-slate-400">Partisipasi briefing keselamatan kerja &amp; SOP harian workshop.</p>
                         </div>
 
-                        <!-- Housekeeping Card -->
-                        <div class="bg-slate-950/70 border border-blue-500/20 rounded-xl p-4 space-y-2 relative overflow-hidden">
+                        <!-- Housekeeping Metric -->
+                        <div class="p-4 sm:p-5 space-y-2">
                             <div class="flex items-center justify-between">
                                 <span class="text-xs font-bold uppercase tracking-wider text-blue-400 flex items-center gap-1.5">
                                     <i class="fa-solid fa-broom"></i> 2. Housekeeping (5S)
@@ -1285,14 +1343,14 @@
                                 <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/30">Bobot 20%</span>
                             </div>
                             <div class="flex items-baseline justify-between pt-2">
-                                <div id="score-housekeeping" class="text-2xl font-black text-white">0 / 100</div>
+                                <div id="score-housekeeping" class="text-2xl sm:text-3xl font-black text-white">0 / 100</div>
                                 <div id="val-hk-count" class="text-xs text-slate-400">0 Laporan</div>
                             </div>
                             <p class="text-[11px] text-slate-400">Kerapihan bay, penataan tool box, kebersihan area kerja 5S.</p>
                         </div>
 
-                        <!-- MAR Operational Card -->
-                        <div class="bg-slate-950/70 border border-emerald-500/20 rounded-xl p-4 space-y-2 relative overflow-hidden">
+                        <!-- MAR Operational Metric -->
+                        <div class="p-4 sm:p-5 space-y-2">
                             <div class="flex items-center justify-between">
                                 <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
                                     <i class="fa-solid fa-wrench"></i> 3. MAR Operasional
@@ -1300,21 +1358,21 @@
                                 <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">Bobot 60%</span>
                             </div>
                             <div class="flex items-baseline justify-between pt-2">
-                                <div id="score-mar" class="text-2xl font-black text-white">0 / 100</div>
+                                <div id="score-mar" class="text-2xl sm:text-3xl font-black text-white">0 / 100</div>
                                 <div id="appraisal-total-mar" class="text-xs text-slate-400">0 MAR Tervalidasi</div>
                             </div>
                             <p class="text-[11px] text-slate-400">Perbaikan Unit, Scheduled Periodical Service, Mayor &amp; Minor.</p>
                         </div>
                     </div>
 
-                    <!-- Overall Grade & Formula -->
-                    <div class="bg-slate-950/90 border border-slate-800 rounded-xl p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <!-- Overall Grade & Formula (Flattened Integrated Bar) -->
+                    <div class="pt-4 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
                         <div class="space-y-1 text-center sm:text-left">
-                            <div class="text-xs text-slate-400 font-semibold uppercase tracking-wider">Formula Pembobotan Resmi</div>
+                            <div class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Formula Pembobotan Resmi</div>
                             <div class="text-xs text-slate-300 font-mono">Skor = (P5M &times; 20%) + (Housekeeping &times; 20%) + (MAR &times; 60%)</div>
                         </div>
-                        <div id="mechanicFinalGradeBadge" class="px-4 py-2 rounded-xl text-xs font-bold border border-slate-700 bg-slate-800 text-slate-300 flex items-center gap-2">
-                            <i class="fa-solid fa-medal text-amber-400"></i>
+                        <div id="mechanicFinalGradeBadge" class="px-4 py-2.5 rounded-xl text-xs font-bold border border-slate-700 bg-slate-800 text-slate-200 flex items-center gap-2">
+                            <i class="fa-solid fa-medal text-amber-400 text-sm"></i>
                             <span id="displayMechanicGrade">Skor Evaluasi: 0 - E (Belum Ada Laporan)</span>
                         </div>
                     </div>
@@ -1341,15 +1399,15 @@
                 </div>
                 <!-- Filters & Sync -->
                 <div class="grid grid-cols-2 sm:flex items-center gap-2">
-                    <button onclick="syncFromGoogleSheets(false)" class="cursor-pointer px-3 sm:px-4 py-2.5 bg-sky-600/20 hover:bg-sky-600/30 text-sky-300 border border-sky-500/30 font-bold text-xs rounded-xl shadow flex items-center justify-center space-x-1.5 transition min-h-[44px] interactive-lift" title="Tarik data terbaru dari Google Sheets">
+                    <button onclick="syncFromGoogleSheets(false)" class="cursor-pointer px-3 sm:px-4 py-2.5 bg-sky-600/20 hover:bg-sky-600/30 text-sky-300 border border-sky-500/30 font-bold text-xs rounded-xl shadow flex items-center justify-center space-x-1.5 transition min-h-[44px] interactive-lift" title="Tarik data terbaru dari Google Sheets" aria-label="Tarik data terbaru dari Google Sheets">
                         <i class="fa-solid fa-arrows-rotate"></i>
                         <span>Sync Data</span>
                     </button>
-                    <input type="date" id="foremanFilterDate" onchange="renderForemanViews()" class="w-full bg-slate-900 border border-slate-800 text-xs text-slate-200 rounded-xl p-2.5 min-h-[44px] focus:ring-2 focus:ring-amber-500">
-                    <select id="foremanFilterMech" onchange="renderForemanViews()" class="w-full bg-slate-900 border border-slate-800 text-xs text-slate-200 rounded-xl p-2.5 min-h-[44px] focus:ring-2 focus:ring-amber-500 cursor-pointer">
+                    <input type="date" id="foremanFilterDate" aria-label="Filter berdasarkan tanggal" onchange="renderForemanViews()" class="w-full bg-slate-900 border border-slate-800 text-xs text-slate-200 rounded-xl p-2.5 min-h-[44px] focus:ring-2 focus:ring-amber-500">
+                    <select id="foremanFilterMech" aria-label="Filter berdasarkan nama mekanik" onchange="renderForemanViews()" class="w-full bg-slate-900 border border-slate-800 text-xs text-slate-200 rounded-xl p-2.5 min-h-[44px] focus:ring-2 focus:ring-amber-500 cursor-pointer">
                         <option value="ALL">Semua Mekanik</option>
                     </select>
-                    <select id="foremanFilterCategory" onchange="renderForemanViews()" class="w-full bg-slate-900 border border-slate-800 text-xs text-slate-200 rounded-xl p-2.5 min-h-[44px] focus:ring-2 focus:ring-amber-500 cursor-pointer">
+                    <select id="foremanFilterCategory" aria-label="Filter berdasarkan kategori pekerjaan" onchange="renderForemanViews()" class="w-full bg-slate-900 border border-slate-800 text-xs text-slate-200 rounded-xl p-2.5 min-h-[44px] focus:ring-2 focus:ring-amber-500 cursor-pointer">
                         <option value="ALL">Semua Kategori</option>
                     </select>
                 </div>
@@ -1366,7 +1424,7 @@
 
                 <!-- KPI Status Validasi Filter Cards (Revisi) -->
                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    <div onclick="filterSupervisorByStatus('Pending')" class="cursor-pointer bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 rounded-xl p-3.5 transition flex items-center justify-between group shadow">
+                    <button type="button" onclick="filterSupervisorByStatus('Pending')" class="cursor-pointer bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 rounded-xl p-3.5 transition flex items-center justify-between group shadow text-left w-full focus:outline-none focus:ring-2 focus:ring-amber-500 min-h-[44px]" aria-label="Filter status Menunggu Validasi">
                         <div>
                             <div class="text-xs font-semibold text-amber-400">Menunggu Validasi</div>
                             <div id="spv-stat-pending" class="text-2xl font-bold text-amber-300 mt-0.5">0</div>
@@ -1374,8 +1432,8 @@
                         <div class="w-10 h-10 rounded-lg bg-amber-500/20 text-amber-400 flex items-center justify-center text-lg group-hover:scale-110 transition">
                             <i class="fa-solid fa-clock"></i>
                         </div>
-                    </div>
-                    <div onclick="filterSupervisorByStatus('Approved')" class="cursor-pointer bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 rounded-xl p-3.5 transition flex items-center justify-between group shadow">
+                    </button>
+                    <button type="button" onclick="filterSupervisorByStatus('Approved')" class="cursor-pointer bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/30 rounded-xl p-3.5 transition flex items-center justify-between group shadow text-left w-full focus:outline-none focus:ring-2 focus:ring-emerald-500 min-h-[44px]" aria-label="Filter status Telah Disetujui">
                         <div>
                             <div class="text-xs font-semibold text-emerald-400">Telah Disetujui</div>
                             <div id="spv-stat-approved" class="text-2xl font-bold text-emerald-300 mt-0.5">0</div>
@@ -1383,8 +1441,8 @@
                         <div class="w-10 h-10 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-lg group-hover:scale-110 transition">
                             <i class="fa-solid fa-circle-check"></i>
                         </div>
-                    </div>
-                    <div onclick="filterSupervisorByStatus('Rejected')" class="cursor-pointer bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 rounded-xl p-3.5 transition flex items-center justify-between group shadow">
+                    </button>
+                    <button type="button" onclick="filterSupervisorByStatus('Rejected')" class="cursor-pointer bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 rounded-xl p-3.5 transition flex items-center justify-between group shadow text-left w-full focus:outline-none focus:ring-2 focus:ring-rose-500 min-h-[44px]" aria-label="Filter status Ditolak atau Revisi">
                         <div>
                             <div class="text-xs font-semibold text-rose-400">Ditolak / Revisi</div>
                             <div id="spv-stat-rejected" class="text-2xl font-bold text-rose-300 mt-0.5">0</div>
@@ -1392,7 +1450,7 @@
                         <div class="w-10 h-10 rounded-lg bg-rose-500/20 text-rose-400 flex items-center justify-center text-lg group-hover:scale-110 transition">
                             <i class="fa-solid fa-circle-xmark"></i>
                         </div>
-                    </div>
+                    </button>
                 </div>
 
                 <!-- Monitoring Pengisian MAR Harian (Revisi) -->
@@ -1411,9 +1469,10 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Flattened 2-Column Split Status (Zero Nested Cards) -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-slate-800 bg-slate-950/40 rounded-xl border border-slate-800/80 overflow-hidden">
                         <!-- Sudah Mengisi -->
-                        <div class="bg-emerald-950/20 border border-emerald-500/30 rounded-xl p-3.5 space-y-2">
+                        <div class="p-3.5 space-y-2">
                             <div class="flex items-center justify-between">
                                 <span class="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
                                     <i class="fa-solid fa-circle-check"></i> Sudah Mengisi MAR
@@ -1426,7 +1485,7 @@
                         </div>
 
                         <!-- Belum Mengisi -->
-                        <div class="bg-rose-950/20 border border-rose-500/30 rounded-xl p-3.5 space-y-2">
+                        <div class="p-3.5 space-y-2">
                             <div class="flex items-center justify-between">
                                 <span class="text-xs font-bold text-rose-400 flex items-center gap-1.5">
                                     <i class="fa-solid fa-triangle-exclamation"></i> Belum Mengisi MAR
@@ -1461,7 +1520,7 @@
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse text-xs">
-                            <thead class="bg-slate-950 text-slate-400 font-semibold border-b border-slate-800 uppercase tracking-wider">
+                            <thead class="text-slate-400 font-semibold border-b border-slate-800 uppercase tracking-wider bg-transparent">
                                 <tr>
                                     <th class="p-3">ID &amp; Mekanik</th>
                                     <th class="p-3">Tanggal &amp; Shift</th>
@@ -1499,7 +1558,7 @@
                 <!-- Desktop Table View (Khusus Layar md: dan ke atas) -->
                 <div class="hidden md:block overflow-x-auto">
                     <table class="w-full text-sm text-left text-slate-300">
-                        <thead class="text-xs uppercase bg-slate-950 text-slate-400 border-b border-slate-800">
+                        <thead class="text-xs uppercase text-slate-400 border-b border-slate-800 bg-transparent">
                             <tr>
                                 <th class="px-4 py-3">Tanggal</th>
                                 <th class="px-4 py-3">Shift</th>
@@ -1583,7 +1642,7 @@
                             <div class="text-[11px] sm:text-xs text-slate-400 font-medium">Total Mekanik</div>
                             <div id="adminStatTotalMech" class="text-xl sm:text-2xl font-bold text-slate-100 mt-1">0</div>
                         </div>
-                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center text-base sm:text-lg border border-sky-500/20 shrink-0">
+                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-sky-500/10 text-sky-400 flex items-center justify-center text-base sm:text-lg shrink-0">
                             <i class="fa-solid fa-users"></i>
                         </div>
                     </div>
@@ -1592,7 +1651,7 @@
                             <div class="text-[11px] sm:text-xs text-emerald-400 font-medium">Sudah MAR Hari Ini</div>
                             <div id="adminStatActiveToday" class="text-xl sm:text-2xl font-bold text-emerald-400 mt-1">0</div>
                         </div>
-                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-base sm:text-lg border border-emerald-500/20 shrink-0">
+                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center text-base sm:text-lg shrink-0">
                             <i class="fa-solid fa-user-check"></i>
                         </div>
                     </div>
@@ -1601,7 +1660,7 @@
                             <div class="text-[11px] sm:text-xs text-rose-400 font-medium">Belum MAR Hari Ini</div>
                             <div id="adminStatInactiveToday" class="text-xl sm:text-2xl font-bold text-rose-400 mt-1">0</div>
                         </div>
-                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center text-base sm:text-lg border border-rose-500/20 shrink-0">
+                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-rose-500/10 text-rose-400 flex items-center justify-center text-base sm:text-lg shrink-0">
                             <i class="fa-solid fa-user-xmark"></i>
                         </div>
                     </div>
@@ -1610,7 +1669,7 @@
                             <div class="text-[11px] sm:text-xs text-amber-400 font-medium">Approved Validasi</div>
                             <div id="adminStatApprovedCount" class="text-xl sm:text-2xl font-bold text-amber-400 mt-1">0</div>
                         </div>
-                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-base sm:text-lg border border-amber-500/20 shrink-0">
+                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center text-base sm:text-lg shrink-0">
                             <i class="fa-solid fa-circle-check"></i>
                         </div>
                     </div>
@@ -1619,8 +1678,8 @@
                             <div class="text-[11px] sm:text-xs text-amber-400 font-bold">Menunggu Approval</div>
                             <div id="adminStatPendingCount" class="text-xl sm:text-2xl font-bold text-amber-400 mt-1">0</div>
                         </div>
-                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-base sm:text-lg border border-amber-500/30 shrink-0">
-                            <i class="fa-solid fa-clock animate-pulse"></i>
+                        <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center text-base sm:text-lg shrink-0">
+                            <i class="fa-solid fa-clock"></i>
                         </div>
                     </div>
                 </div>
@@ -1701,31 +1760,31 @@
                     <!-- Filter Controls Grid (Mobile Responsive) -->
                     <div class="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2.5 pt-1 text-xs">
                         <div class="flex items-center space-x-1 bg-slate-950 p-1 rounded-xl border border-slate-800 overflow-x-auto max-w-full">
-                            <button id="preset_today" onclick="setAdminDatePreset('today')" class="admin-date-preset-btn px-2.5 py-1.5 rounded-lg text-slate-300 hover:bg-slate-800 transition whitespace-nowrap min-h-[36px]">Hari Ini</button>
-                            <button id="preset_this_week" onclick="setAdminDatePreset('this_week')" class="admin-date-preset-btn px-2.5 py-1.5 rounded-lg text-slate-300 hover:bg-slate-800 transition whitespace-nowrap min-h-[36px]">Minggu Ini</button>
-                            <button id="preset_this_month" onclick="setAdminDatePreset('this_month')" class="admin-date-preset-btn px-2.5 py-1.5 rounded-lg text-slate-300 hover:bg-slate-800 transition whitespace-nowrap min-h-[36px]">Bulan Ini</button>
-                            <button id="preset_all" onclick="setAdminDatePreset('all')" class="admin-date-preset-btn px-2.5 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold transition whitespace-nowrap min-h-[36px]">Semua</button>
+                            <button id="preset_today" onclick="setAdminDatePreset('today')" aria-label="Filter laporan hari ini" class="admin-date-preset-btn px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-800 transition whitespace-nowrap min-h-[44px]">Hari Ini</button>
+                            <button id="preset_this_week" onclick="setAdminDatePreset('this_week')" aria-label="Filter laporan minggu ini" class="admin-date-preset-btn px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-800 transition whitespace-nowrap min-h-[44px]">Minggu Ini</button>
+                            <button id="preset_this_month" onclick="setAdminDatePreset('this_month')" aria-label="Filter laporan bulan ini" class="admin-date-preset-btn px-3 py-2 rounded-lg text-slate-300 hover:bg-slate-800 transition whitespace-nowrap min-h-[44px]">Bulan Ini</button>
+                            <button id="preset_all" onclick="setAdminDatePreset('all')" aria-label="Filter seluruh riwayat laporan" class="admin-date-preset-btn px-3 py-2 rounded-lg bg-amber-500 text-slate-950 font-bold transition whitespace-nowrap min-h-[44px]">Semua</button>
                         </div>
 
                         <div class="grid grid-cols-2 sm:flex items-center gap-2">
                             <div class="flex items-center space-x-1">
                                 <span class="text-slate-400 text-[10px] sm:text-[11px]">Dari:</span>
-                                <input type="date" id="adminStartDate" onchange="renderAdminTable(); renderAdminStats(); renderCategoryChart();" class="w-full bg-slate-950 border border-slate-800 text-slate-200 rounded-xl p-2 text-xs min-h-[40px]">
+                                <input type="date" id="adminStartDate" aria-label="Tanggal mulai filter laporan" onchange="renderAdminTable(); renderAdminStats(); renderCategoryChart();" class="w-full bg-slate-950 border border-slate-800 text-slate-200 rounded-xl p-2 text-xs min-h-[44px] focus:ring-2 focus:ring-amber-500">
                             </div>
                             <div class="flex items-center space-x-1">
                                 <span class="text-slate-400 text-[10px] sm:text-[11px]">S/D:</span>
-                                <input type="date" id="adminEndDate" onchange="renderAdminTable(); renderAdminStats(); renderCategoryChart();" class="w-full bg-slate-950 border border-slate-800 text-slate-200 rounded-xl p-2 text-xs min-h-[40px]">
+                                <input type="date" id="adminEndDate" aria-label="Tanggal selesai filter laporan" onchange="renderAdminTable(); renderAdminStats(); renderCategoryChart();" class="w-full bg-slate-950 border border-slate-800 text-slate-200 rounded-xl p-2 text-xs min-h-[44px] focus:ring-2 focus:ring-amber-500">
                             </div>
                         </div>
 
                         <div class="grid grid-cols-2 sm:flex items-center gap-2">
-                            <select id="adminStatusFilter" onchange="renderAdminTable()" class="w-full bg-slate-950 border border-slate-800 text-slate-200 rounded-xl p-2 text-xs min-h-[40px] cursor-pointer">
+                            <select id="adminStatusFilter" aria-label="Filter status persetujuan laporan" onchange="renderAdminTable()" class="w-full bg-slate-950 border border-slate-800 text-slate-200 rounded-xl p-2 text-xs min-h-[44px] focus:ring-2 focus:ring-amber-500 cursor-pointer">
                                 <option value="ALL">Semua Status</option>
                                 <option value="Approved">Approved</option>
                                 <option value="Pending">Pending</option>
                                 <option value="Rejected">Rejected</option>
                             </select>
-                            <select id="adminCategoryFilter" onchange="renderAdminTable()" class="w-full bg-slate-950 border border-slate-800 text-slate-200 rounded-xl p-2 text-xs min-h-[40px] cursor-pointer">
+                            <select id="adminCategoryFilter" aria-label="Filter kategori pekerjaan laporan" onchange="renderAdminTable()" class="w-full bg-slate-950 border border-slate-800 text-slate-200 rounded-xl p-2 text-xs min-h-[44px] focus:ring-2 focus:ring-amber-500 cursor-pointer">
                                 <option value="ALL">Semua Kategori</option>
                                 <option value="Mayor">Mayor</option>
                                 <option value="Minor">Minor</option>
@@ -1758,7 +1817,7 @@
                 <!-- Desktop Table View (Khusus Layar md: dan ke atas) -->
                 <div class="hidden md:block overflow-x-auto">
                     <table class="w-full text-sm text-left text-slate-300">
-                        <thead class="text-xs uppercase bg-slate-950 text-slate-400 border-b border-slate-800">
+                        <thead class="text-xs uppercase text-slate-400 border-b border-slate-800 bg-transparent">
                             <tr>
                                 <th class="px-4 py-3">ID MAR</th>
                                 <th class="px-4 py-3">Tanggal</th>
@@ -1813,11 +1872,33 @@
                         <p class="text-xs text-slate-400 mt-1">Matriks evaluasi kinerja seluruh mekanik: K3LH P5M (20%), Housekeeping (20%), dan MAR (60%).</p>
                     </div>
                     <div class="flex items-center gap-2">
-                        <label class="text-xs font-semibold text-slate-400 whitespace-nowrap">Periode Evaluasi:</label>
-                        <select id="admin-appraisal-month" onchange="renderAdminAppraisal()" class="bg-slate-950 border border-slate-700 text-xs text-white rounded-xl px-3 py-2 focus:ring-2 focus:ring-amber-500 cursor-pointer min-h-[40px]">
+                        <label for="admin-appraisal-month" class="text-xs font-semibold text-slate-400 whitespace-nowrap">Periode Evaluasi:</label>
+                        <select id="admin-appraisal-month" aria-label="Filter Periode Evaluasi Kinerja Karyawan" onchange="renderAdminAppraisal()" class="bg-slate-950 border border-slate-700 text-xs text-white rounded-xl px-3 py-2 focus:ring-2 focus:ring-amber-500 cursor-pointer min-h-[44px]">
+                            <option value="ALL">Semua Periode</option>
+                            <option value="2027-12">Desember 2027</option>
+                            <option value="2027-11">November 2027</option>
+                            <option value="2027-10">Oktober 2027</option>
+                            <option value="2027-09">September 2027</option>
+                            <option value="2027-08">Agustus 2027</option>
+                            <option value="2027-07">Juli 2027</option>
+                            <option value="2027-06">Juni 2027</option>
+                            <option value="2027-05">Mei 2027</option>
+                            <option value="2027-04">April 2027</option>
+                            <option value="2027-03">Maret 2027</option>
+                            <option value="2027-02">Februari 2027</option>
+                            <option value="2027-01">Januari 2027</option>
+                            <option value="2026-12">Desember 2026</option>
+                            <option value="2026-11">November 2026</option>
+                            <option value="2026-10">Oktober 2026</option>
                             <option value="2026-09" selected>September 2026</option>
                             <option value="2026-08">Agustus 2026</option>
                             <option value="2026-07">Juli 2026</option>
+                            <option value="2026-06">Juni 2026</option>
+                            <option value="2026-05">Mei 2026</option>
+                            <option value="2026-04">April 2026</option>
+                            <option value="2026-03">Maret 2026</option>
+                            <option value="2026-02">Februari 2026</option>
+                            <option value="2026-01">Januari 2026</option>
                         </select>
                     </div>
                 </div>
@@ -1825,7 +1906,7 @@
                 <div class="bg-slate-900/90 rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse text-xs">
-                            <thead class="bg-slate-950 text-slate-400 font-semibold border-b border-slate-800 uppercase tracking-wider">
+                            <thead class="text-slate-400 font-semibold border-b border-slate-800 uppercase tracking-wider bg-transparent">
                                 <tr>
                                     <th class="p-3.5">Nama Mekanik / Jabatan</th>
                                     <th class="p-3.5 text-center">Nilai P5M (20%)</th>
@@ -1862,7 +1943,7 @@
                 <div class="bg-slate-900/90 rounded-2xl border border-slate-800 overflow-hidden shadow-xl">
                     <div class="overflow-x-auto">
                         <table class="w-full text-left border-collapse text-xs">
-                            <thead class="bg-slate-950 text-slate-400 font-semibold border-b border-slate-800 uppercase tracking-wider">
+                            <thead class="text-slate-400 font-semibold border-b border-slate-800 uppercase tracking-wider bg-transparent">
                                 <tr>
                                     <th class="p-3.5">Nama Lengkap Karyawan</th>
                                     <th class="p-3.5">Jabatan / Role Teknis</th>
@@ -1971,8 +2052,8 @@
                 </button>
             </div>
 
-            <!-- Form Tambah Kategori Baru -->
-            <div class="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800 space-y-3">
+            <!-- Form Tambah Kategori Baru (Flattened Section, No Nested Card) -->
+            <div class="pb-3 border-b border-slate-800/80 space-y-3">
                 <div class="flex items-center justify-between">
                     <span class="text-xs font-bold text-slate-200 flex items-center gap-1.5">
                         <i class="fa-solid fa-circle-plus text-amber-400"></i> Tambah Kategori Baru
@@ -2025,9 +2106,9 @@
 
             <!-- List Master Kategori Table -->
             <div class="flex-1 overflow-y-auto pr-1">
-                <div class="border border-slate-800 rounded-xl overflow-hidden">
+                <div class="overflow-x-auto">
                     <table class="w-full text-left text-xs text-slate-300">
-                        <thead class="bg-slate-950/80 uppercase text-[10px] font-bold text-slate-400 border-b border-slate-800">
+                        <thead class="uppercase text-[10px] font-bold text-slate-400 border-b border-slate-800 bg-transparent">
                             <tr>
                                 <th class="px-3 py-2.5">Badge &amp; Kategori</th>
                                 <th class="px-3 py-2.5 hidden sm:table-cell">Deskripsi</th>
@@ -2450,7 +2531,7 @@
          * c. Auto GET Fallback with cache buster
          * d. Offline Resilience (Fallback ke LocalStorage)
          */
-        async function fetchGAS(actionName, payloadData = {}) {
+        async function fetchGAS(actionName, payloadData = {}, timeoutMs = 45000) {
             // Mode 1: Native Apps Script Web App
             if (typeof google !== 'undefined' && google.script && google.script.run) {
                 return new Promise((resolve, reject) => {
@@ -2471,21 +2552,33 @@
             // Mode 2: External HTTP Fetch ke deployed GAS URL (Locked ke LOCKED_GAS_URL)
             const targetUrl = (LIVE_GAS_URL || LOCKED_GAS_URL || '').trim();
             if (!targetUrl) {
-                // Tidak ada URL GAS, fallback diam ke mode lokal
                 return { success: false, offline: true, message: 'GAS URL belum dikonfigurasi.' };
             }
+
+            const controller = new AbortController();
+            const timeoutTimer = setTimeout(() => controller.abort(), timeoutMs);
 
             try {
                 const response = await fetch(targetUrl, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // GAS aman dengan text/plain
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({ action: actionName, data: payloadData }),
-                    redirect: 'follow'
+                    redirect: 'follow',
+                    signal: controller.signal
                 });
-                const resJson = await response.json();
-                return resJson;
+                clearTimeout(timeoutTimer);
+                const textRes = await response.text();
+                try {
+                    return JSON.parse(textRes);
+                } catch (e) {
+                    console.warn('Respons bukan format JSON valid:', textRes);
+                    return { success: false, message: 'Respons server bukan JSON valid.' };
+                }
             } catch (postErr) {
+                clearTimeout(timeoutTimer);
                 console.warn('POST GAS gagal, mencoba GET fallback...', postErr);
+                const getController = new AbortController();
+                const getTimer = setTimeout(() => getController.abort(), timeoutMs);
                 try {
                     // Mode 3: GET Fallback
                     const cleanUrl = targetUrl.split('?')[0];
@@ -2496,10 +2589,18 @@
                     });
                     const getRes = await fetch(`${cleanUrl}?${params.toString()}`, {
                         method: 'GET',
-                        redirect: 'follow'
+                        redirect: 'follow',
+                        signal: getController.signal
                     });
-                    return await getRes.json();
+                    clearTimeout(getTimer);
+                    const getText = await getRes.text();
+                    try {
+                        return JSON.parse(getText);
+                    } catch (e) {
+                        return { success: false, message: 'Respons GET bukan JSON valid.' };
+                    }
                 } catch (getErr) {
+                    clearTimeout(getTimer);
                     console.error('Semua koneksi GAS gagal:', getErr);
                     return { success: false, error: getErr.toString(), offline: true };
                 }
@@ -3119,9 +3220,16 @@
             if (LIVE_GAS_URL) {
                 fetchGAS('createMAR', newEntry).then(res => {
                     if (res && res.success) {
-                        showToast(`Laporan MAR ${newEntry.id} tersimpan di Google Sheets!`, 'success');
+                        showToast(`Laporan MAR #${newEntry.id} tersimpan di Google Sheets!`, 'success');
+                        updateGasSyncIndicator(true);
+                    } else {
+                        showToast(`Peringatan: Gagal kirim ke Google Sheets (${res?.message || 'Error'}). Tersimpan lokal.`, 'warning');
+                        updateGasSyncIndicator(false);
                     }
-                }).catch(err => console.warn('Sync createMAR to GAS failed:', err));
+                }).catch(err => {
+                    console.warn('Sync createMAR to GAS failed:', err);
+                    updateGasSyncIndicator(false);
+                });
             }
 
             // Reset Form
@@ -3520,20 +3628,34 @@
             item.validatedBy = currentUser ? `${currentUser.name} (${currentUser.roleName})` : 'Atasan Plant';
             item.validatedAt = new Date().toLocaleString('id-ID');
 
-            safeSetStorage(STORAGE_KEYS.ENTRIES, marEntries)
+            safeSetStorage(STORAGE_KEYS.ENTRIES, marEntries);
             renderForemanViews();
             renderAdminViews();
             updateMechanicStats();
-            showToast(`Laporan MAR ${id} telah disetujui!`, 'success');
+            showToast(`Menyimpan persetujuan MAR #${id} ke Google Sheets...`, 'info');
 
             const hasGAS = (typeof google !== 'undefined' && google.script && google.script.run) || (LIVE_GAS_URL && LIVE_GAS_URL.trim().length > 0);
             if (hasGAS) {
-                fetchGAS('updateMARStatus', {
-                    id: id,
-                    status: 'Approved',
-                    rejectionNote: '',
-                    validatedBy: item.validatedBy
-                }).catch(err => console.warn('Sync approve to GAS failed:', err));
+                try {
+                    const res = await fetchGAS('updateMARStatus', {
+                        id: id,
+                        status: 'Approved',
+                        rejectionNote: '',
+                        validatedBy: item.validatedBy,
+                        entry: item
+                    });
+                    if (res && res.success) {
+                        showToast(`Status MAR #${id} berhasil disetujui & langsung tersinkron ke Google Sheets!`, 'success');
+                        updateGasSyncIndicator(true);
+                    } else {
+                        showToast(`Peringatan: Gagal sinkron ke Google Sheets (${res?.message || 'Error'}). Tersimpan lokal.`, 'warning');
+                        updateGasSyncIndicator(false);
+                    }
+                } catch (err) {
+                    console.warn('Sync approve to GAS failed:', err);
+                    showToast(`Koneksi Google Sheets terganggu (${err.message}). Tersimpan lokal.`, 'warning');
+                    updateGasSyncIndicator(false);
+                }
             }
         }
 
@@ -3563,21 +3685,35 @@
                 item.validatedBy = currentUser ? `${currentUser.name} (${currentUser.roleName})` : 'Atasan Plant';
                 item.validatedAt = new Date().toLocaleString('id-ID');
 
-                safeSetStorage(STORAGE_KEYS.ENTRIES, marEntries)
+                safeSetStorage(STORAGE_KEYS.ENTRIES, marEntries);
                 closeRejectModal();
                 renderForemanViews();
                 renderAdminViews();
                 updateMechanicStats();
-                showToast(`Laporan MAR ${id} telah ditolak.`, 'warning');
+                showToast(`Mengirim penolakan MAR #${id} ke Google Sheets...`, 'info');
 
                 const hasGAS = (typeof google !== 'undefined' && google.script && google.script.run) || (LIVE_GAS_URL && LIVE_GAS_URL.trim().length > 0);
                 if (hasGAS) {
-                    fetchGAS('updateMARStatus', {
-                        id: id,
-                        status: 'Rejected',
-                        rejectionNote: reason,
-                        validatedBy: item.validatedBy
-                    }).catch(err => console.warn('Sync reject to GAS failed:', err));
+                    try {
+                        const res = await fetchGAS('updateMARStatus', {
+                            id: id,
+                            status: 'Rejected',
+                            rejectionNote: reason,
+                            validatedBy: item.validatedBy,
+                            entry: item
+                        });
+                        if (res && res.success) {
+                            showToast(`Penolakan MAR #${id} berhasil diperbarui di Google Sheets!`, 'success');
+                            updateGasSyncIndicator(true);
+                        } else {
+                            showToast(`Peringatan: Gagal sinkron ke Google Sheets (${res?.message || 'Error'}). Tersimpan lokal.`, 'warning');
+                            updateGasSyncIndicator(false);
+                        }
+                    } catch (err) {
+                        console.warn('Sync reject to GAS failed:', err);
+                        showToast(`Koneksi Google Sheets terganggu (${err.message}). Tersimpan lokal.`, 'warning');
+                        updateGasSyncIndicator(false);
+                    }
                 }
             }
         }
@@ -3791,7 +3927,11 @@
             }
 
             if (list.length === 0) {
-                container.innerHTML = `<div class="col-span-full text-center py-6 text-xs text-slate-500">Tidak ada mekanik pada section ${currentDisciplineSection}.</div>`;
+                container.innerHTML = `<div class="col-span-full">${createEmptyStateHTML(
+                    'fa-solid fa-users-slash',
+                    'Tidak Ada Mekanik Terdaftar',
+                    `Belum ada personil mekanik yang terdaftar pada section ${currentDisciplineSection}.`
+                )}</div>`;
                 return;
             }
 
@@ -4564,7 +4704,7 @@
                     dot.className = 'w-2.5 h-2.5 rounded-full bg-rose-500';
                     text.textContent = 'GAS Disconnected';
                 } else {
-                    dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse';
+                    dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-400 ring-2 ring-emerald-400/30';
                     text.textContent = 'Google Sheets Connected';
                 }
             } else {
@@ -4765,7 +4905,13 @@
             syncMasterMechanics();
 
             if (masterMechanics.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="6" class="p-4 text-center text-slate-500">Tidak ada personil mekanik terdaftar.</td></tr>';
+                tbody.innerHTML = createTableEmptyRowHTML(
+                    6,
+                    'fa-solid fa-users-slash',
+                    'Belum Ada Personil Terdaftar',
+                    'Tambahkan mekanik baru ke master database agar evaluasi kinerja dapat dikompilasi.',
+                    `<button onclick="openAddEmployeeModal()" class="cursor-pointer px-4 py-2 min-h-[44px] bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-lg transition inline-flex items-center gap-1.5"><i class="fa-solid fa-user-plus"></i> Tambah Personil Baru</button>`
+                );
                 return;
             }
 
@@ -4837,7 +4983,11 @@
 
             let html = `<p class="text-xs text-slate-400 mb-3">Total Laporan: <strong class="text-white">${userMars.length} MAR</strong></p>`;
             if (userMars.length === 0) {
-                html += `<p class="text-xs text-slate-500 text-center py-6">Tidak ada laporan tercatat pada periode ini (Skor: 0).</p>`;
+                html += createEmptyStateHTML(
+                    'fa-regular fa-folder-open',
+                    'Tidak Ada Laporan Tercatat',
+                    'Personil mekanik ini belum memiliki catatan laporan kerja pada periode yang dipilih (Skor: 0).'
+                );
             } else {
                 html += `<div class="space-y-2 max-h-[60vh] overflow-y-auto pr-1">`;
                 userMars.forEach(m => {
@@ -4883,6 +5033,17 @@
             if (!tbody) return;
             tbody.innerHTML = '';
             syncMasterMechanics();
+
+            if (masterMechanics.length === 0) {
+                tbody.innerHTML = createTableEmptyRowHTML(
+                    4,
+                    'fa-solid fa-users-slash',
+                    'Belum Ada Karyawan Terdaftar',
+                    'Daftar master personil dan mekanik masih kosong.',
+                    `<button onclick="openAddEmployeeModal()" class="cursor-pointer px-4 py-2 min-h-[44px] bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl shadow-lg transition inline-flex items-center gap-1.5"><i class="fa-solid fa-user-plus"></i> Tambah Karyawan Baru</button>`
+                );
+                return;
+            }
 
             masterMechanics.forEach(emp => {
                 const totalMar = marEntries.filter(x => (x.mechName === emp.name || x.mechanicName === emp.name)).length;
@@ -5012,7 +5173,13 @@
             if (rEl) rEl.innerText = rCount;
 
             if (filtered.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-500 italic">Tidak ada laporan sesuai filter antrean saat ini.</td></tr>`;
+                tbody.innerHTML = createTableEmptyRowHTML(
+                    6,
+                    'fa-solid fa-clipboard-check',
+                    'Antrean Validasi Bersih',
+                    'Tidak ada laporan MAR yang menunggu approval sesuai kriteria filter saat ini.',
+                    `<button onclick="resetSupervisorFilter()" class="cursor-pointer px-4 py-2 min-h-[44px] bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold rounded-xl border border-slate-700 transition inline-flex items-center gap-1.5"><i class="fa-solid fa-rotate-left"></i> Reset Filter Antrean</button>`
+                );
                 return;
             }
 
@@ -5108,10 +5275,10 @@
             if (countNo) countNo.innerText = noCount;
 
             if (hasCount === 0) {
-                hasContainer.innerHTML = `<span class="text-xs text-slate-500 italic p-1">Belum ada laporan masuk pada tanggal ini.</span>`;
+                hasContainer.innerHTML = `<span class="text-xs text-slate-400 inline-flex items-center gap-1.5 p-2 bg-slate-900/60 rounded-lg border border-slate-800"><i class="fa-solid fa-inbox text-slate-500"></i> Belum ada laporan masuk pada tanggal ini.</span>`;
             }
             if (noCount === 0) {
-                noContainer.innerHTML = `<span class="text-xs text-emerald-400 font-medium p-1">Semua personel mekanik sudah mengirim laporan!</span>`;
+                noContainer.innerHTML = `<span class="text-xs text-emerald-400 inline-flex items-center gap-1.5 p-2 bg-emerald-950/40 rounded-lg border border-emerald-800/40 font-medium"><i class="fa-solid fa-circle-check text-emerald-400"></i> Semua personil mekanik sudah mengirim laporan!</span>`;
             }
         }
 
@@ -5176,24 +5343,38 @@
                 item.validatedAt = new Date().toLocaleString('id-ID');
 
                 safeSetStorage(STORAGE_KEYS.ENTRIES, marEntries);
+                closeSpvModal();
+                renderSupervisorQueue();
+                renderForemanViews();
+                renderAdminViews();
+                updateMechanicStats();
+
+                showToast(`Menyimpan validasi MAR #${activeValidatingId} (${decision}) ke Google Sheets...`, 'info');
 
                 const hasGAS = (typeof google !== 'undefined' && google.script && google.script.run) || (LIVE_GAS_URL && LIVE_GAS_URL.trim().length > 0);
                 if (hasGAS) {
-                    fetchGAS('updateMARStatus', {
-                        id: item.id,
-                        status: decision,
-                        rejectionNote: note,
-                        validatedBy: item.validatedBy
-                    }).catch(err => console.warn('GAS sync status failed:', err));
+                    try {
+                        const res = await fetchGAS('updateMARStatus', {
+                            id: item.id,
+                            status: decision,
+                            rejectionNote: note,
+                            validatedBy: item.validatedBy,
+                            entry: item
+                        });
+                        if (res && res.success) {
+                            showToast(`Status MAR #${activeValidatingId} berhasil di-update (${decision}) di Google Sheets!`, decision === 'Approved' ? 'success' : 'warning');
+                            updateGasSyncIndicator(true);
+                        } else {
+                            showToast(`Gagal sinkron ke Google Sheets: ${res?.message || 'Error'}. Tersimpan lokal.`, 'warning');
+                            updateGasSyncIndicator(false);
+                        }
+                    } catch (err) {
+                        console.warn('GAS sync status failed:', err);
+                        showToast(`Koneksi Google Sheets terganggu (${err.message}). Tersimpan lokal.`, 'warning');
+                        updateGasSyncIndicator(false);
+                    }
                 }
             }
-
-            closeSpvModal();
-            renderSupervisorQueue();
-            renderForemanViews();
-            renderAdminViews();
-            updateMechanicStats();
-            showToast(`Laporan MAR ${activeValidatingId} berhasil di-update: ${decision}`, decision === 'Approved' ? 'success' : 'warning');
         }
 
         // 24. renderMechanicDashboard()
